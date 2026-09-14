@@ -60,7 +60,7 @@ does not have.
   invariant each store must not break. PostgreSQL is selected and wired for
   records; the rest are local files and fixtures.
   [`docs/STORAGE.md`](docs/STORAGE.md)
-- **The admission gate** — nine checks with refusal as the default, and the ninth
+- **The admission gate** — ten checks with refusal as the default, and one of them
   is the one a process would omit: **nothing admits on its own behalf**, because a
   process promoting its own output is a write wearing a ruling's clothes. A check
   that cannot be evaluated fails, so an undeclared evidence axis is not a weak one
@@ -415,7 +415,7 @@ src/domain/negativeStates.ts  the kinds of no, kept apart: seven named rules, ea
 src/domain/collateralVehicle.ts  hold, monitor, adjudicate, release: the condition evaluator that never holds the collateral, never warrants the outcome and never un-fires a release; the restatement exposure measured and refused as a rate (docs/CONDITIONAL_CUSTODY.md)
 src/domain/accommodation.ts  what each capability waits on, with the corpus probing every precondition it can decide; the fit is derived and never declared (docs/ACCOMMODATION.md)
 src/domain/projection.ts the projection instruments' questions and roles and the routing table as data, over the one router in src/projection/spec.ts; a test checks the table against the router for every combination
-src/domain/admission.ts  the gate: nine checks with refusal as the default, the entry stamp of three clocks and declared provenance, a writable row obtainable only from an ADMITTED ruling, ancestry kept outside the release, and releaseLeaks checking doctrine rule 2 rather than asserting it
+src/domain/admission.ts  the gate: ten checks with refusal as the default, the entry stamp of three clocks and declared provenance, a writable row obtainable only from an ADMITTED ruling, ancestry kept outside the release, and releaseLeaks checking doctrine rule 2 rather than asserting it
 src/domain/referenceGround.ts  the third clock and the two as-of questions it keeps apart; three readings of absence; the ground measured but not sold, reasoned over but not into (docs/REFERENCE_GROUND.md)
 src/domain/responsePipeline.ts  what leaves and why: five stages in refusal order with the estates refused before rights are read, provenance-only disclosure, a named stage on every refusal, and a receipt over the canonical run
 src/domain/computationCard.ts  computations graded as archival artifacts rather than trusted as proofs, and the four-way divergence whose last case a frozen trace cannot separate

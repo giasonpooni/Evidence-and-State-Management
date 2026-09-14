@@ -234,7 +234,18 @@ function evaluate(candidate: AdmissionCandidate, authority: string): Array<{ che
   return failed;
 }
 
-const ALL_CHECKS: readonly AdmissionCheck[] = [
+/**
+ * The checks every candidate is measured against, and the denominator a ruling
+ * counts in. `SUPERSESSION_IS_ABOUT_THIS_RECORD` is deliberately not here: it
+ * applies only to a ruling that claims to replace another, so counting it would
+ * put a check in the denominator that most candidates are never measured
+ * against.
+ *
+ * Exported because the README states this count in prose, and a count stated in
+ * prose beside a list that grows is the ordinary way a claim about a system
+ * rots. `./admission.test.ts` reads the document back and compares.
+ */
+export const ALL_CHECKS: readonly AdmissionCheck[] = [
   'EVIDENCE_ARTIFACT_BOUND', 'EVIDENCE_CLASS_COMPLETE', 'ORIGIN_ADMISSIBLE',
   'BOTH_CLOCKS', 'SUBJECT_IDENTIFIED', 'ASSERTION_PRESENT', 'RIGHTS_DECIDED',
   'AUTHORITY_IS_NOT_THE_PROCESS', 'PROVENANCE_DECLARED', 'SOURCE_CLOCK_COHERENT',

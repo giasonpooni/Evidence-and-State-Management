@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ADMISSION_LOSS, ADMISSION_METHOD, ADMITTED_PROVENANCE, METHOD_NAMESPACE, CHECK_MEANING, RECORD_PROVENANCE, STRUCTURAL_REFUSAL, THE_ROUTE_THAT_EXISTS, isAdmitting, admit, admitInto, admittedRow, crossedTheGate, releaseLeaks, type AdmissionCandidate } from './admission';
+import { ALL_CHECKS, ADMISSION_LOSS, ADMISSION_METHOD, ADMITTED_PROVENANCE, METHOD_NAMESPACE, CHECK_MEANING, RECORD_PROVENANCE, STRUCTURAL_REFUSAL, THE_ROUTE_THAT_EXISTS, isAdmitting, admit, admitInto, admittedRow, crossedTheGate, releaseLeaks, type AdmissionCandidate } from './admission';
 
 const AUTHORITY = 'role:corpus-steward';
 const RULED_AT = '2026-09-07T12:00:00Z';
@@ -315,5 +316,44 @@ describe('who may be an authority, which is nobody in the method namespace', () 
     const because = ruling.failed.find((entry) => entry.check === 'AUTHORITY_IS_NOT_THE_PROCESS')!.because;
     expect(because).toContain(METHOD_NAMESPACE);
     expect(because).toMatch(/where no party is/);
+  });
+});
+
+describe('the gate and the account of it cannot drift apart', () => {
+  /**
+   * The README stated nine checks and named the self-admission check as the
+   * ninth. The gate had ten, and that check was the eighth of them: a tenth was
+   * added and the prose beside it was not. Nothing failed, because nothing was
+   * reading the prose.
+   *
+   * This repository's whole claim is that a statement about the system fails a
+   * test when it stops being true rather than quietly ageing, so the count is
+   * read back out of the document and compared, the way
+   * `./queryCost.test.ts` reads its measurement table back.
+   */
+  const NUMBER_WORD = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+
+  it('states the gate’s own count, in words, wherever the README gives one', () => {
+    const readme = readFileSync('README.md', 'utf-8');
+    const claimed = [...readme.matchAll(/(\w+) checks with refusal as the default/g)].map((hit) => hit[1]);
+    expect(claimed.length, 'the README should state the count where it describes the gate').toBeGreaterThan(0);
+    for (const word of claimed) expect(word, 'the README count should be the gate’s own').toBe(NUMBER_WORD[ALL_CHECKS.length]);
+  });
+
+  /*
+   * And the count is a real denominator: every check in it can fail, so none of
+   * them is a name that always passes because nothing evaluates it.
+   */
+  it('can fail every check it counts, so the denominator is not padded', () => {
+    const empty = {
+      candidateId: 'c', buildId: 'b', recordId: 'R', subjectCanonicalId: '', predicate: '',
+    } as unknown as AdmissionCandidate;
+    const failed = new Set(admit(empty, ADMISSION_METHOD, RULED_AT).failed.map((entry) => entry.check));
+    for (const check of ALL_CHECKS) expect(failed.has(check), `${check} should fail on an empty candidate`).toBe(true);
+  });
+
+  /* Every counted check is one a reader can look up. */
+  it('gives every counted check a stated meaning', () => {
+    for (const check of ALL_CHECKS) expect(CHECK_MEANING[check], check).toBeTruthy();
   });
 });
