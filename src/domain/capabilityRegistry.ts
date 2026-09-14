@@ -137,12 +137,12 @@ const corpusRead = (
 });
 
 export const CORPUS_CAPABILITIES: readonly Capability[] = [
-  corpusRead('corpus.list-releases', 'List the release history of every corpus', 'src/adapter/feed.ts', 'releasesPayload', 'RELEASE_METADATA', 'MCP tool list_releases; HTTP GET /api/v1/releases'),
+  corpusRead('corpus.list-releases', 'List the release history of every corpus the caller may ask about', 'src/adapter/feed.ts', 'releasesPayload', 'RELEASE_METADATA', 'MCP tool list_releases; HTTP GET /api/v1/releases'),
   corpusRead('corpus.get-release', 'Read one release: build record, coverage, sources, certification, governance', 'src/adapter/feed.ts', 'releasePayload', 'RELEASE_METADATA', 'MCP tool get_release; HTTP GET /api/v1/releases/[releaseId]'),
   corpusRead('corpus.get-release-manifest', 'Read the certified release manifest and its commitment', 'src/adapter/feed.ts', 'releaseManifestPayload', 'MANIFEST', 'MCP tool get_release_manifest; HTTP GET /api/v1/releases/[releaseId]/manifest'),
   corpusRead('corpus.list-records', 'Read the deliverable records of a release, after the rights guard and the projection', 'src/adapter/feed.ts', 'recordsPayload', 'RECORDS', 'MCP tool list_records; HTTP GET /api/v1/releases/[releaseId]/records'),
   corpusRead('corpus.query-as-of', 'Ask what was held at a valid time and a knowledge time, or be refused with a code', 'src/adapter/feed.ts', 'asOfPayload', 'RECORDS', 'MCP tool query_as_of; HTTP GET /api/v1/releases/[releaseId]/as-of'),
-  corpusRead('corpus.list-retractions', 'Read what the corpus has taken back since a cursor', 'src/adapter/feed.ts', 'retractionsPayload', 'RELEASE_METADATA', 'MCP tool list_retractions; HTTP GET /api/v1/retractions'),
+  corpusRead('corpus.list-retractions', 'Read what the corpora the caller may ask about have taken back since a cursor', 'src/adapter/feed.ts', 'retractionsPayload', 'RELEASE_METADATA', 'MCP tool list_retractions; HTTP GET /api/v1/retractions'),
   corpusRead('corpus.get-ruling', 'Read one ruling under a projection', 'src/adapter/feed.ts', 'rulingPayload', 'RULING', 'MCP tool get_ruling; HTTP GET /api/v1/rulings/[rulingId]'),
   corpusRead('corpus.get-ruling-manifest', 'Read a ruling manifest and its commitment', 'src/adapter/feed.ts', 'rulingManifestPayload', 'MANIFEST', 'MCP tool get_ruling_manifest; HTTP GET /api/v1/rulings/[rulingId]/manifest'),
   corpusRead('factoring.get-receipt', 'Read an underwriting receipt: fact, condition, provenance and validation status', 'src/fixtures/caravan/factoring.ts', 'FIXTURE_FACTORING_RECEIPTS', 'RECEIPT', 'MCP tool get_factoring_receipt; HTTP GET /api/v1/factoring/receipts/[receiptId]'),

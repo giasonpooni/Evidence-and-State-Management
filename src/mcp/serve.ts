@@ -15,14 +15,23 @@
  * WHAT THE SCOPE CHECK REACHES
  *
  * A call that names a corpus is checked against the session's scope directly.
- * A call that names a release has its corpus resolved from the source first —
- * a lookup the boundary makes about its own inventory, not an answer served to
- * the caller — and is checked the same way. A call that names neither, which
- * today is the rulings, the factoring receipts and the dispatch events, is not
- * scope-checked, because those identifiers do not carry a corpus and inventing
- * a mapping from their prefixes would be a guess enforcing a policy. Those
- * tools are still admitted or refused by purpose; they are simply not narrowed
- * by scope, and that is the honest state of it.
+ * A call that names an object — a release, a ruling, a factoring receipt, a
+ * dispatch event — has that object's corpus resolved from the source first, a
+ * lookup the boundary makes about its own inventory rather than an answer
+ * served to the caller, and is checked the same way.
+ *
+ * Every one of those identifiers carries a corpus, which was not what this
+ * comment used to say. A ruling names the release it was evaluated against, a
+ * receipt names `notary.corpusReleaseId`, an event names
+ * `rollingAttestation.corpusReleaseId`. Treating them as corpus-less because
+ * reading a corpus out of a prefix would be a guess confused two things: the
+ * prefix is a guess, and the field on the object is a fact.
+ *
+ * A call that names no object at all is a corpus-spanning read —
+ * `list_releases` with its argument omitted, `list_retractions`, which has no
+ * such argument. It is about every corpus the source holds, so it is bounded
+ * to the session's scope and served narrowed, the way a projection is bounded
+ * rather than refused.
  */
 import { z } from 'zod';
 import { admitCall, admitCapability, servedCallReceipt, type CallAdmission, type ProposedOperation, type ServedCallReceipt, type TerminalSession } from '@/domain/terminalPlane';
@@ -30,7 +39,7 @@ import { TOOL_CAPABILITY, capabilityById } from '@/domain/capabilityRegistry';
 import { projectionFor } from '@/domain/terminalVocabulary';
 import { getCorpusSource } from '@/adapter/corpusSource';
 import type { RecordingFailure, ServedCallSink } from './record';
-import { MCP_TOOLS, runMcpTool } from './tools';
+import { MCP_TOOLS, releaseOfNamedObject, runMcpTool } from './tools';
 
 export interface ServedCall {
   receipt: ServedCallReceipt;
@@ -76,13 +85,17 @@ export async function corporaOfCall(args: unknown): Promise<readonly string[]> {
   const shape = z.object({ corpus: z.string().optional(), releaseId: z.string().optional() }).safeParse(args ?? {});
   if (!shape.success) return [];
   const named: string[] = [];
-  if (shape.data.releaseId !== undefined) {
-    const hit = await getCorpusSource().getRelease(shape.data.releaseId);
-    if (hit !== undefined) named.push(hit.corpus.corpusId);
-  }
-  if (shape.data.corpus !== undefined && !named.includes(shape.data.corpus)) named.push(shape.data.corpus);
+  const add = (corpusId: string | undefined) => {
+    if (corpusId !== undefined && !named.includes(corpusId)) named.push(corpusId);
+  };
+  if (shape.data.releaseId !== undefined) add(await corpusOfRelease(shape.data.releaseId));
+  const namedRelease = await releaseOfNamedObject(args);
+  if (namedRelease !== undefined) add(await corpusOfRelease(namedRelease));
+  add(shape.data.corpus);
   return named;
 }
+
+const corpusOfRelease = async (releaseId: string) => (await getCorpusSource().getRelease(releaseId))?.corpus.corpusId;
 
 /** The one a receipt records: the release's corpus where there is one. */
 export async function corpusOfCall(args: unknown): Promise<string | undefined> {
@@ -112,7 +125,7 @@ export async function serveToolCall(
   const named = tool === undefined ? [] : await corporaOfCall(bounded);
   const admission = admitCall(session, toolName, at, named);
   const receipt = servedCallReceipt(session, toolName, at, admission, named[0]);
-  const served = await outcomeOf(receipt, admission, () => runMcpTool(toolName, bounded));
+  const served = await outcomeOf(receipt, admission, () => runMcpTool(toolName, bounded, session.corpusScope));
   return record(served, session, sink);
 }
 
@@ -182,7 +195,7 @@ export async function serveCapabilityCall(
   if (toolName !== undefined && admission.outcome === 'ADMITTED') {
     z.object(MCP_TOOLS.find((candidate) => candidate.name === toolName)!.shape).parse(bounded ?? {});
   }
-  const served = await outcomeOf(receipt, admission, toolName === undefined ? undefined : () => runMcpTool(toolName, bounded));
+  const served = await outcomeOf(receipt, admission, toolName === undefined ? undefined : () => runMcpTool(toolName, bounded, session.corpusScope));
   return record(served, session, sink);
 }
 

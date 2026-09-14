@@ -46,9 +46,26 @@ function declaresDemonstration(src: { readonly origin: { readonly kind: string }
   return src.origin.kind !== 'LIVE';
 }
 
-export async function releasesPayload(corpusId?: string) {
+/**
+ * The releases of the corpora a caller may ask about.
+ *
+ * `scope` is the governed surface's session scope, and it is how a corpus-
+ * spanning read is narrowed to the corpora a terminal named. Omitting the
+ * `corpus` argument used to mean every corpus the source holds, whatever the
+ * session had standing in; that was the same authorization bypass as an
+ * omitted projection, reached by asking for less.
+ *
+ * A named `corpus` is checked against the scope at the door and filtered again
+ * here, which is deliberate: the filter reads the corpus off the release
+ * rather than off the argument, so it holds whether or not the door ran.
+ *
+ * `scope` undefined means unscoped, which is the unauthenticated HTTP feed and
+ * is unchanged. The narrowing belongs to the governed door, not to the feed.
+ */
+export async function releasesPayload(corpusId?: string, scope?: readonly string[]) {
   const src = getCorpusSource();
-  const releases = await src.listReleases(corpusId);
+  const releases = (await src.listReleases(corpusId))
+    .filter((release) => scope === undefined || scope.includes(release.corpusId));
   return envelope({ releases: releases.map(releaseSummary), count: releases.length }, undefined,
     { demonstration: carriesDemonstrationMaterial(releases, declaresDemonstration(src)) });
 }
@@ -113,11 +130,36 @@ export async function asOfPayload(releaseId: string, q: AsOfQuery) {
     { demonstration: carriesDemonstrationMaterial([hit.corpus, hit.release], declaresDemonstration(src)) });
 }
 
-export async function retractionsPayload(since: string | undefined, viewer: VisibilityClass) {
+/**
+ * What the corpus has taken back, narrowed to the corpora a caller may ask
+ * about.
+ *
+ * `list_retractions` declares no corpus parameter, so there is no argument to
+ * check and there was nothing narrowing it: a session scoped to one corpus was
+ * served every corpus's corrections and recalls. A retraction names the
+ * release it was issued against, and a release resolves to a corpus through
+ * the source's own inventory, so the scope is applied to the material rather
+ * than guessed from an identifier's prefix.
+ *
+ * `scope` undefined means unscoped, as above.
+ */
+export async function retractionsPayload(since: string | undefined, viewer: VisibilityClass, scope?: readonly string[]) {
   const src = getCorpusSource();
   const list = await src.retractions(since, viewer);
-  return envelope({ projection: viewer, since: since ?? null, count: list.length, retractions: list.map(retractionPayload) }, undefined,
+  const within = scope === undefined ? list : await retractionsWithin(src, list, scope);
+  return envelope({ projection: viewer, since: since ?? null, count: within.length, retractions: within.map(retractionPayload) }, undefined,
     { demonstration: carriesDemonstrationMaterial([], declaresDemonstration(src)) });
+}
+
+async function retractionsWithin<T extends { readonly releaseId: string }>(
+  src: ReturnType<typeof getCorpusSource>,
+  list: readonly T[],
+  scope: readonly string[],
+): Promise<T[]> {
+  const inScope = new Set(
+    (await src.listReleases()).filter((release) => scope.includes(release.corpusId)).map((release) => release.releaseId),
+  );
+  return list.filter((retraction) => inScope.has(retraction.releaseId));
 }
 
 /** The application layer, served beside the corpus: a ruling as the workbench would return it. */

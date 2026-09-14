@@ -152,10 +152,11 @@ not admit the tool. And a capability that is admitted but that nothing plumbs
 answers `unreachable` rather than a refusal, because "you may, and it is not
 wired" and "you may not" are different answers.
 
-## Two bypasses that were reachable in one argument
+## Three bypasses that were reachable in one argument
 
-An independent review of this surface found both; both were reproduced before
-they were closed, and both are regression tests in `src/mcp/serve.test.ts`.
+An independent review of this surface found the first two; auditing those two
+found the third. All were reproduced before they were closed, and all are
+regression tests in `src/mcp/serve.test.ts`.
 
 **A corpus argument masking an out-of-scope release.** The scope check read the
 caller's `corpus` argument in preference to the corpus of the release it also
@@ -174,19 +175,62 @@ wider one. The class decides now (`CLASS_PROJECTION`): the argument may narrow
 it and never widen it, it is set whether or not the caller supplied one, and
 the tool reads the bounded value rather than what arrived.
 
-The shape of both is the same and worth naming: a check that trusts an input
-the caller controls, when an authoritative source for the same fact was already
-at hand.
+**A scope check that only ran on what a call named.** Four of the twelve tools
+name a release and were checked. The other eight were not, and the ground for
+it — stated in this document — was wrong.
+
+Two of the eight name no object at all, and were treated as naming no corpus
+when they are in fact about every corpus. `list_releases` with its argument
+omitted served the release history of all of them: a customer terminal scoped
+to `caravan.specialty-cargo` was handed all seven releases, Tradewind's and
+Landshark's included. `list_retractions`, which declares no corpus argument,
+served every corpus's corrections and recalls.
+
+The other six name an object that carries a corpus, which this document denied.
+`get_ruling` and `get_ruling_manifest`: `Ruling.corpus` is a `CorpusBuildRef`
+naming the release the ruling was evaluated against. `get_factoring_receipt`
+and `verify_factoring_receipt`: `notary.corpusReleaseId`.
+`get_dispatch_event` and `replay_dispatch_liability`:
+`rollingAttestation.corpusReleaseId`. Each resolves through the same inventory
+lookup a `releaseId` argument already used. The old justification confused two
+different things: reading a corpus out of an identifier's **prefix** is a guess,
+and reading it off a **field on the object** is a fact. There was never a tool
+here whose subject had no corpus.
+
+The two corpus-spanning reads are bounded rather than refused, as the
+projection is: a customer scoped to one corpus asking what releases there are
+is asking a reasonable question, and the useful answer is its own corpora. The
+six object reads are refused, because each names exactly one corpus and it is
+not this session's.
+
+The shape of all three bypasses is the same and worth naming: a check that
+trusts an input the caller controls — including the input it chose not to send
+— when an authoritative source for the same fact was already at hand. The first
+was a wrong argument preferred over the right one, the second an omitted
+argument defaulting wide, and the third an argument that was never going to
+arrive, because the tool has no such parameter and the fact lived on the object
+instead. Omission is an input.
 
 ## What the scope check reaches
 
-A call naming a corpus is checked directly. A call naming a release has its
-corpus resolved from the source first — a lookup the boundary makes about its
-own inventory, not an answer served to the caller. A call naming neither, which
-today is the rulings, the factoring receipts and the dispatch events, is not
-narrowed by scope, because those identifiers do not carry a corpus and inventing
-a mapping from their prefixes would be a guess enforcing a policy. Those calls
-are still admitted or refused by purpose.
+A call naming a corpus is checked directly. A call naming an object — a
+release, a ruling, a factoring receipt, a dispatch event — has that object's
+corpus resolved from the source first, a lookup the boundary makes about its
+own inventory rather than an answer served to the caller, and is checked the
+same way. An object that resolves to nothing names no corpus rather than a
+wrong one, and the tool's own not-found answer stands.
+
+A call naming no object at all is a corpus-spanning read — `list_releases` with
+its argument omitted, `list_retractions`, which has no such argument. It is
+about every corpus the source holds, so it is bounded to the session's scope
+and served narrowed.
+
+All twelve reachable tools are therefore scope-governed, which is what this
+section always claimed and what four of them did.
+
+The narrowing belongs to the governed door and not to the feed. `/api/v1` has
+no session and therefore no scope; bounding it here would be inventing an
+authorization the transport does not carry, and it is served exactly as it was.
 
 ## What this does not do
 

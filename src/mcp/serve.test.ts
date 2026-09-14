@@ -33,8 +33,29 @@ describe('a call is about the corpus it names', () => {
     expect(await corpusOfCall({ releaseId: 'nope' })).toBeUndefined();
   });
 
-  it('is undefined when the call names neither, which is not the same as any corpus', async () => {
-    expect(await corpusOfCall({ rulingId: 'RUL-7C104-r2' })).toBeUndefined();
+  /* A ruling names the corpus release it was evaluated against, so it does. */
+  it('resolves the corpus of a named ruling through the release it was evaluated against', async () => {
+    expect(await corpusOfCall({ rulingId: 'RUL-7C104-r2' })).toBe('caravan.specialty-cargo');
+    expect(await corpusOfCall({ rulingId: 'nope' })).toBeUndefined();
+  });
+
+  /*
+   * So does a factoring receipt, through `notary.corpusReleaseId`, and a
+   * dispatch event, through `rollingAttestation.corpusReleaseId`. Every
+   * identifier these tools take carries a corpus; none of them is read out of
+   * a prefix.
+   */
+  it('resolves the corpus of a receipt and of a dispatch event from the object', async () => {
+    expect(await corpusOfCall({ receiptId: 'RCP-FACT-2026-0901' })).toBe('caravan.specialty-cargo');
+    expect(await corpusOfCall({ decisionId: 'DISP-EVT-2026-0803' })).toBe('caravan.specialty-cargo');
+    /* A dispatch event is reachable by its load id as well as its decision id. */
+    expect(await corpusOfCall({ decisionId: 'LOD-99203' })).toBe('caravan.specialty-cargo');
+  });
+
+  /* Naming no object is not the same as naming any corpus. */
+  it('is undefined when the call names no object at all', async () => {
+    expect(await corpusOfCall({ receiptId: 'nope' })).toBeUndefined();
+    expect(await corpusOfCall({ decisionId: 'nope' })).toBeUndefined();
     expect(await corpusOfCall({})).toBeUndefined();
     expect(await corpusOfCall(undefined)).toBeUndefined();
   });
@@ -198,5 +219,126 @@ describe('a caller cannot argue its way past the boundary', () => {
   it('leaves the counterparty projection to the classes that may receive it', async () => {
     const served = await serveToolCall(session(), 'get_ruling', { rulingId: 'RUL-7C104-r2' }, AT);
     expect(JSON.stringify(served.result)).toContain('COUNTERPARTY_SHARED');
+  });
+});
+
+/**
+ * A third bypass of the same shape, found by auditing the two above: the scope
+ * check only ever ran on what a call named, so a call that named no corpus was
+ * treated as naming none when it was in fact about all of them.
+ *
+ * `list_releases` with its argument omitted served the release history of
+ * every corpus; `list_retractions`, which declares no corpus argument at all,
+ * served every corpus's corrections and recalls; and `get_ruling` served the
+ * rulings of a corpus the session had no standing in, on the stated but
+ * mistaken ground that a ruling carries no corpus.
+ *
+ * The first two are bounded rather than refused, as the projection is: a
+ * customer scoped to one corpus asking what releases there are is asking a
+ * reasonable question, and the useful answer is its own. The third is refused,
+ * because a ruling names exactly one corpus and it is not this session's.
+ */
+describe('a corpus-spanning read is bounded by the scope, not widened by silence', () => {
+  const caravanOnly = session();
+  const tradewindOnly = session({ terminalId: 'terminal:tw', corpusScope: ['tradewind.freight-rates'] });
+
+  const releaseIds = (served: { result?: unknown }) =>
+    ((served.result as { releases: { releaseId: string }[] }).releases).map((r) => r.releaseId);
+
+  it('serves a one-corpus session only its own releases when no corpus is named', async () => {
+    const served = await serveToolCall(caravanOnly, 'list_releases', {}, AT);
+    expect(served.admission.admitted).toBe(true);
+    expect(releaseIds(served)).toEqual(['REL-CAR-2026.09.01', 'REL-CAR-2026.08.25', 'REL-CAR-2026.08.11']);
+    expect(releaseIds(served).some((id) => id.startsWith('REL-TW') || id.startsWith('REL-LS'))).toBe(false);
+  });
+
+  /* A scope of two corpora is two corpora, still ordered by knowledge time. */
+  it('serves every corpus a session named, and no others', async () => {
+    const both = session({ corpusScope: ['caravan.specialty-cargo', 'tradewind.freight-rates'] });
+    const served = await serveToolCall(both, 'list_releases', {}, AT);
+    expect(releaseIds(served)).toEqual([
+      'REL-TW-2026.09.01', 'REL-CAR-2026.09.01', 'REL-CAR-2026.08.25', 'REL-TW-2026.08.20', 'REL-CAR-2026.08.11',
+    ]);
+  });
+
+  /* A named corpus was already checked at the door, so it is served as asked. */
+  it('leaves a named corpus alone', async () => {
+    const served = await serveToolCall(caravanOnly, 'list_releases', { corpus: 'caravan.specialty-cargo' }, AT);
+    expect(releaseIds(served)).toEqual(['REL-CAR-2026.09.01', 'REL-CAR-2026.08.25', 'REL-CAR-2026.08.11']);
+  });
+
+  it('bounds the retractions to the scope, though the tool has no corpus argument', async () => {
+    const served = await serveToolCall(tradewindOnly, 'list_retractions', {}, AT);
+    const body = served.result as { count: number; retractions: { releaseId: string }[] };
+    expect(body.retractions.map((r) => r.releaseId)).toEqual(['REL-TW-2026.08.20']);
+    expect(body.count).toBe(1);
+  });
+
+  it('refuses a ruling of a corpus the session never named, and serves nothing', async () => {
+    const served = await serveToolCall(tradewindOnly, 'get_ruling', { rulingId: 'RUL-7C104-r2' }, AT);
+    expect(served.refusal?.code).toBe('CORPUS_OUTSIDE_SCOPE');
+    expect(served.result).toBeUndefined();
+    /* The receipt names the corpus that was asked about, rather than nothing. */
+    expect(served.receipt.corpus).toBe('caravan.specialty-cargo');
+  });
+
+  it('refuses the ruling manifest by the same route', async () => {
+    const served = await serveToolCall(tradewindOnly, 'get_ruling_manifest', { rulingId: 'RUL-7C104-r2' }, AT);
+    expect(served.refusal?.code).toBe('CORPUS_OUTSIDE_SCOPE');
+    expect(served.result).toBeUndefined();
+  });
+
+  /*
+   * The receipts and the events were the other half of the same mistaken
+   * ground: both carry the corpus release they were drawn from, so both are
+   * refused to a session that never named that corpus.
+   */
+  it('refuses a factoring receipt and its verification across the scope', async () => {
+    for (const tool of ['get_factoring_receipt', 'verify_factoring_receipt']) {
+      const served = await serveToolCall(tradewindOnly, tool, { receiptId: 'RCP-FACT-2026-0901' }, AT);
+      expect(served.refusal?.code, tool).toBe('CORPUS_OUTSIDE_SCOPE');
+      expect(served.result, tool).toBeUndefined();
+    }
+  });
+
+  it('refuses a dispatch event and its replay across the scope', async () => {
+    for (const tool of ['get_dispatch_event', 'replay_dispatch_liability']) {
+      const served = await serveToolCall(tradewindOnly, tool, { decisionId: 'DISP-EVT-2026-0803' }, AT);
+      expect(served.refusal?.code, tool).toBe('CORPUS_OUTSIDE_SCOPE');
+      expect(served.result, tool).toBeUndefined();
+    }
+  });
+
+  /* The load id reaches the same event, so it is refused by the same route. */
+  it('refuses the replay reached by load id as well as by decision id', async () => {
+    const served = await serveToolCall(tradewindOnly, 'replay_dispatch_liability', { decisionId: 'LOD-99203' }, AT);
+    expect(served.refusal?.code).toBe('CORPUS_OUTSIDE_SCOPE');
+    expect(served.result).toBeUndefined();
+  });
+
+  it('still answers the receipts and the events of the corpus the session did name', async () => {
+    const receipt = await serveToolCall(caravanOnly, 'get_factoring_receipt', { receiptId: 'RCP-FACT-2026-0901' }, AT);
+    expect(receipt.admission.admitted).toBe(true);
+    expect(receipt.receipt.corpus).toBe('caravan.specialty-cargo');
+    const event = await serveToolCall(caravanOnly, 'replay_dispatch_liability', { decisionId: 'LOD-99203' }, AT);
+    expect(event.admission.admitted).toBe(true);
+    expect(event.result).toBeDefined();
+  });
+
+  it('still answers a ruling of the corpus the session did name', async () => {
+    const served = await serveToolCall(caravanOnly, 'get_ruling', { rulingId: 'RUL-7C104-r2' }, AT);
+    expect(served.admission.admitted).toBe(true);
+    expect(served.receipt.corpus).toBe('caravan.specialty-cargo');
+  });
+
+  /*
+   * The narrowing belongs to the governed door. The unauthenticated feed has
+   * no session and therefore no scope, and is unchanged by this: bounding it
+   * here would be inventing an authorization the transport does not carry.
+   */
+  it('leaves the unscoped feed exactly as it was', async () => {
+    const { releasesPayload, retractionsPayload } = await import('@/adapter/feed');
+    expect((await releasesPayload() as { count: number }).count).toBe(7);
+    expect((await retractionsPayload(undefined, 'COUNTERPARTY_SHARED') as { count: number }).count).toBe(4);
   });
 });
