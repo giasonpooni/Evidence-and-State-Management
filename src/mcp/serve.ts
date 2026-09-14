@@ -103,6 +103,21 @@ export async function corpusOfCall(args: unknown): Promise<string | undefined> {
 }
 
 /**
+ * The session as it stood when the call arrived.
+ *
+ * The scope is read twice on the way through — once to decide the call, and
+ * again to bound a corpus-spanning read at dispatch — with awaits in between.
+ * Two reads of a mutable field around an await is a check against one value
+ * and a serve against another, which is the boundary's own failure shape in
+ * miniature. The declaration is copied and frozen before the first await, so
+ * both reads see what was declared and a scope cannot grow underneath a
+ * pending call.
+ */
+function heldSession(session: TerminalSession): TerminalSession {
+  return Object.freeze({ ...session, corpusScope: Object.freeze([...session.corpusScope]) });
+}
+
+/**
  * Answer a terminal's call, or refuse it.
  *
  * Arguments are validated before admission for a known tool, so a malformed
@@ -121,12 +136,13 @@ export async function serveToolCall(
   const tool = MCP_TOOLS.find((candidate) => candidate.name === toolName);
   if (tool !== undefined) z.object(tool.shape).parse(args ?? {});
 
-  const bounded = boundProjection(session, toolName, args);
+  const held = heldSession(session);
+  const bounded = boundProjection(held, toolName, args);
   const named = tool === undefined ? [] : await corporaOfCall(bounded);
-  const admission = admitCall(session, toolName, at, named);
-  const receipt = servedCallReceipt(session, toolName, at, admission, named[0]);
-  const served = await outcomeOf(receipt, admission, () => runMcpTool(toolName, bounded, session.corpusScope));
-  return record(served, session, sink);
+  const admission = admitCall(held, toolName, at, named);
+  const receipt = servedCallReceipt(held, toolName, at, admission, named[0]);
+  const served = await outcomeOf(receipt, admission, () => runMcpTool(toolName, bounded, held.corpusScope));
+  return record(served, held, sink);
 }
 
 /**
@@ -175,13 +191,14 @@ export async function serveCapabilityCall(
   sink?: ServedCallSink,
 ): Promise<ServedCall> {
   const capability = capabilityById(capabilityId);
+  const held = heldSession(session);
   const reachedBy = Object.keys(TOOL_CAPABILITY).find((name) => TOOL_CAPABILITY[name] === capabilityId);
-  const bounded = reachedBy === undefined ? args : boundProjection(session, reachedBy, args);
+  const bounded = reachedBy === undefined ? args : boundProjection(held, reachedBy, args);
   const named = capability === undefined ? [] : await corporaOfCall(bounded);
   const corpus = named[0];
-  const admission = admitCapability(session, capability, at, named);
+  const admission = admitCapability(held, capability, at, named);
   const toolName = reachedBy;
-  const receipt = { ...servedCallReceipt(session, toolName ?? capabilityId, at, admission, corpus), capability: capability?.id ?? null };
+  const receipt = { ...servedCallReceipt(held, toolName ?? capabilityId, at, admission, corpus), capability: capability?.id ?? null };
   if (admission.outcome === 'ADMITTED' && toolName === undefined) {
     return record({
       receipt,
@@ -190,13 +207,13 @@ export async function serveCapabilityCall(
         because: `${capabilityId} is admitted for this session and no transport reaches it.`,
         reachableToday: capability?.reachableToday ?? 'not reachable',
       },
-    }, session, sink);
+    }, held, sink);
   }
   if (toolName !== undefined && admission.outcome === 'ADMITTED') {
     z.object(MCP_TOOLS.find((candidate) => candidate.name === toolName)!.shape).parse(bounded ?? {});
   }
-  const served = await outcomeOf(receipt, admission, toolName === undefined ? undefined : () => runMcpTool(toolName, bounded, session.corpusScope));
-  return record(served, session, sink);
+  const served = await outcomeOf(receipt, admission, toolName === undefined ? undefined : () => runMcpTool(toolName, bounded, held.corpusScope));
+  return record(served, held, sink);
 }
 
 /**

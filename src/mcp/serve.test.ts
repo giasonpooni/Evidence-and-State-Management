@@ -332,6 +332,29 @@ describe('a corpus-spanning read is bounded by the scope, not widened by silence
   });
 
   /*
+   * The scope is read twice on the way through a call — once to decide it, and
+   * again to bound a corpus-spanning read at dispatch — with awaits in
+   * between. Both reads must see the declaration as it stood when the call
+   * arrived, or the boundary checks one value and serves against another.
+   */
+  it('serves the scope as declared, though the array is widened mid-call', async () => {
+    const scope = ['caravan.specialty-cargo'];
+    const inFlight = serveToolCall(session({ corpusScope: scope }), 'list_releases', {}, AT);
+    scope.push('tradewind.freight-rates', 'landshark.terminal-parcels');
+    const served = await inFlight;
+    expect(releaseIds(served)).toEqual(['REL-CAR-2026.09.01', 'REL-CAR-2026.08.25', 'REL-CAR-2026.08.11']);
+  });
+
+  it('refuses on the scope as declared, though it is widened mid-call', async () => {
+    const scope = ['landshark.terminal-parcels'];
+    const inFlight = serveToolCall(session({ corpusScope: scope }), 'list_records', { releaseId: 'REL-CAR-2026.09.01' }, AT);
+    scope.push('caravan.specialty-cargo');
+    const served = await inFlight;
+    expect(served.refusal?.code).toBe('CORPUS_OUTSIDE_SCOPE');
+    expect(served.result).toBeUndefined();
+  });
+
+  /*
    * The narrowing belongs to the governed door. The unauthenticated feed has
    * no session and therefore no scope, and is unchanged by this: bounding it
    * here would be inventing an authorization the transport does not carry.
