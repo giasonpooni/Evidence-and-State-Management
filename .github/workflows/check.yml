@@ -68,6 +68,27 @@ jobs:
 
       - run: npm ci
 
+      # Nothing here had ever audited the dependency tree. What that cost was a
+      # critical advisory against the framework the app is served on —
+      # unauthenticated RCE in the image optimizer among eleven — sitting in a
+      # pinned version for as long as nobody looked. A test suite that checks
+      # every claim this system makes about itself, and never asked whether the
+      # thing running it was patched, was measuring the wrong surface.
+      #
+      # The production tree must stay at zero, so this fails the build at the
+      # lowest level. `npm run audit` is the same command a contributor runs.
+      - name: Production dependencies carry no known advisory
+        run: npm run audit
+
+      # The toolchain is a different risk and gets a different rule. A vitest or
+      # esbuild advisory reaches a developer's machine, not the deployed app, so
+      # a new one published upstream should be visible on the next run rather
+      # than blocking an unrelated fix from merging. It is reported and does not
+      # fail. Both trees are at zero today; only one of them is a promise.
+      - name: Toolchain advisories, reported
+        run: npm run audit:dev
+        continue-on-error: true
+
       # `npm run check` is kernel:test && typecheck && lint && test, in that
       # order, and it is what a contributor runs. Running the same command means
       # CI cannot drift from the local gate.
