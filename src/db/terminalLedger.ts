@@ -90,7 +90,12 @@ export const DECLARABLE_PAIRS: ReadonlyArray<readonly [string, string]> =
   TERMINAL_CLASSES.flatMap((terminalClass) =>
     declarablePurposes(terminalClass).map((purpose) => [terminalClass, purpose] as const));
 
-const DECLARABLE = DECLARABLE_PAIRS.map(([cls, use]) => `('${cls}', '${use}')`).join(', ');
+/*
+ * Escaped like everything else, though these are the domain's own constants
+ * rather than anything a caller sends. One writer in this file that quotes by
+ * hand is one a later reader can copy.
+ */
+const DECLARABLE = DECLARABLE_PAIRS.map(([cls, use]) => `(${sqlText(cls)}, ${sqlText(use)})`).join(', ');
 
 export const TERMINAL_LEDGER_DDL = `
 -- Every capability the substrate declares, seeded from the registry. A call
@@ -248,7 +253,7 @@ CREATE TRIGGER call_is_written_once BEFORE UPDATE OR DELETE ON served_call
  */
 export function terminalCapabilitySeed(): string {
   return CAPABILITIES.map((capability) =>
-    `INSERT INTO terminal_capability (capability_id, kind, serves, touches_estates) VALUES (${sqlText(capability.id)}, '${capability.kind}', ${capability.serves ? `'${capability.serves}'` : 'NULL'}, ${capability.touchesEstates});`)
+    `INSERT INTO terminal_capability (capability_id, kind, serves, touches_estates) VALUES (${sqlText(capability.id)}, ${sqlText(capability.kind)}, ${capability.serves ? sqlText(capability.serves) : 'NULL'}, ${capability.touchesEstates});`)
     .join('\n');
 }
 
@@ -258,8 +263,8 @@ export function sessionRow(session: {
   corpusScope: readonly string[]; openedAt: string; expiresAt: string;
 }): string {
   return `INSERT INTO terminal_session (session_id, terminal_id, terminal_class, purpose, corpus_scope, opened_at, expires_at)
-    VALUES (${sqlText(session.sessionId)}, ${sqlText(session.terminalId)}, '${session.terminalClass}', '${session.purpose}',
-      ${sqlArray(session.corpusScope)}, '${session.openedAt}', '${session.expiresAt}')`;
+    VALUES (${sqlText(session.sessionId)}, ${sqlText(session.terminalId)}, ${sqlText(session.terminalClass)}, ${sqlText(session.purpose)},
+      ${sqlArray(session.corpusScope)}, ${sqlText(session.openedAt)}, ${sqlText(session.expiresAt)})`;
 }
 
 /**
@@ -281,9 +286,9 @@ export function servedCallRow(
 ): string {
   return `INSERT INTO served_call (call_id, session_id, session_opened_at, session_expires_at, session_class,
       capability_id, capability_kind, corpus, served_at, decision, refusal, proposal_id, because)
-    VALUES (${sqlText(callId)}, ${sqlText(receipt.sessionId)}, '${session.openedAt}', '${session.expiresAt}', '${receipt.terminalClass}',
-      ${sqlText(receipt.capability ?? '')}, '${capabilityKind}', ${receipt.corpus ? sqlText(receipt.corpus) : 'NULL'},
-      '${receipt.servedAt}', '${receipt.decision}', ${receipt.refusal ? sqlText(receipt.refusal) : 'NULL'},
+    VALUES (${sqlText(callId)}, ${sqlText(receipt.sessionId)}, ${sqlText(session.openedAt)}, ${sqlText(session.expiresAt)}, ${sqlText(receipt.terminalClass)},
+      ${sqlText(receipt.capability ?? '')}, ${sqlText(capabilityKind)}, ${receipt.corpus ? sqlText(receipt.corpus) : 'NULL'},
+      ${sqlText(receipt.servedAt)}, ${sqlText(receipt.decision)}, ${receipt.refusal ? sqlText(receipt.refusal) : 'NULL'},
       ${proposalId ? sqlText(proposalId) : 'NULL'}, ${sqlText(receipt.because)})`;
 }
 

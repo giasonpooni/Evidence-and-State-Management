@@ -58,7 +58,8 @@ export function ddlColumns(ddl: string): Record<string, string[]> {
 export const sqlText = (value: string) => `'${value.replace(/'/g, "''")}'`;
 
 /**
- * A list of values as a SQL array literal, with every element quoted.
+ * A list of values as a SQL array literal, with every element quoted and
+ * escaped in both grammars it has to survive.
  *
  * The quoting is the whole point and it was the difference between two copies
  * of this helper that carried the same name one directory apart. Unquoted,
@@ -66,7 +67,15 @@ export const sqlText = (value: string) => `'${value.replace(/'/g, "''")}'`;
  * model_training}` is read back as three elements, not two, so a rights array
  * silently gains a member and loses the one it split. Quoted, it is two.
  *
- * Nothing in the corpus carries a comma in a right today, which is why both
- * encodings appeared to work and why only one of them is correct.
+ * Quoting alone was not enough, and the gap was an injection rather than a
+ * mis-read. An array literal is written inside a SQL string, so it passes
+ * through two grammars: the array's own, where a double quote and a backslash
+ * must be backslash-escaped, and SQL's, where a single quote must be doubled.
+ * This helper escaped neither. A value carrying `"}', ...` closed the array,
+ * closed the string, completed the row and appended a statement of its own —
+ * and `sessionRow` builds the corpus scope a terminal declares with it, so the
+ * statement was the caller's to write. The escaping is layered now, innermost
+ * grammar first, and `sqlText` puts the outer quotes on.
  */
-export const sqlArray = (values: readonly string[]) => `'{${values.map((value) => `"${value}"`).join(',')}}'`;
+export const sqlArray = (values: readonly string[]) =>
+  sqlText(`{${values.map((value) => `"${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`).join(',')}}`);

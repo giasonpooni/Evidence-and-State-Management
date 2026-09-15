@@ -7,6 +7,7 @@
  * the second refusal is the one that matters when somebody writes a row by
  * hand, or a migration does.
  */
+import { readFileSync } from 'node:fs';
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { PGlite } from '@electric-sql/pglite';
 import { CAPABILITIES, capabilityById } from '@/domain/capabilityRegistry';
@@ -398,5 +399,99 @@ describe('what the plane decided is what the ledger holds', () => {
       { terminal_id: 'terminal:acme-risk', purpose: 'customer_delivery', decision: 'PROPOSAL_REQUIRED', asks: 1 },
       { terminal_id: 'terminal:acme-risk', purpose: 'customer_delivery', decision: 'REFUSED', asks: 2 },
     ]);
+  });
+});
+
+/**
+ * The row builders write SQL as text, so every value they carry has to survive
+ * the grammars it is written into. A terminal declares its own corpus scope,
+ * its own identity and its own window, so those values are the caller's — and
+ * two of the three reached the statement unescaped.
+ *
+ * `sqlArray` quoted its elements and escaped nothing. A scope element carrying
+ * `"}', ...` closed the array literal, closed the SQL string, completed the row
+ * with values of its own and appended a second statement, which committed in
+ * the same transaction as the legitimate insert. Dropping `served_call` — the
+ * table that records what terminals did — was reachable from a declared scope.
+ */
+describe('a declared value is data, whatever it is made of', () => {
+  /* Completes the VALUES list so the insert stays valid, then adds a statement. */
+  const DROPS_THE_LEDGER = `caravan.specialty-cargo"}', '${OPENED}', '${EXPIRES}'); DROP TABLE served_call; --`;
+
+  it('does not let a declared corpus scope write a statement of its own', async () => {
+    await tx(sessionRow({ ...SESSION, corpusScope: [DROPS_THE_LEDGER] }));
+    const [survives] = await rows(`SELECT to_regclass('served_call')::text AS present`);
+    expect(survives.present, 'the ledger a terminal is recorded in should still exist').toBe('served_call');
+  });
+
+  it('keeps the payload as the scope it claimed to be, rather than as syntax', async () => {
+    await tx(sessionRow({ ...SESSION, corpusScope: [DROPS_THE_LEDGER] }));
+    const [row] = await rows(`SELECT corpus_scope FROM terminal_session WHERE session_id = 'TS-1'`);
+    expect(row.corpus_scope).toEqual([DROPS_THE_LEDGER]);
+  });
+
+  /*
+   * Every character that means something in one of the two grammars: the
+   * single quote SQL ends a string with, the double quote and backslash the
+   * array element uses, the comma the array separates on, and the braces that
+   * bound it.
+   */
+  it('round-trips every character that is syntax somewhere, byte for byte', async () => {
+    const awkward = ["a'b", 'c"d', 'e\\f', 'g,h', '{i}', 'j}k'];
+    await tx(sessionRow({ ...SESSION, sessionId: 'TS-AWKWARD', corpusScope: awkward }));
+    const [row] = await rows(`SELECT corpus_scope FROM terminal_session WHERE session_id = 'TS-AWKWARD'`);
+    expect(row.corpus_scope).toEqual(awkward);
+  });
+
+  /* The identity and the window are the caller's too, and were interpolated raw. */
+  it('does not let a terminal identity or a declared window carry syntax', async () => {
+    await tx(sessionRow({
+      ...SESSION,
+      sessionId: 'TS-2',
+      terminalId: `terminal:x'); DROP TABLE served_call; --`,
+      corpusScope: ['caravan.specialty-cargo'],
+    }));
+    const [survives] = await rows(`SELECT to_regclass('served_call')::text AS present`);
+    expect(survives.present).toBe('served_call');
+    const [row] = await rows(`SELECT terminal_id FROM terminal_session WHERE session_id = 'TS-2'`);
+    expect(row.terminal_id).toBe(`terminal:x'); DROP TABLE served_call; --`);
+  });
+
+  /* And the receipt a call is written from carries the caller's text as well. */
+  it('does not let a refusal reason or a served instant carry syntax', async () => {
+    await session();
+    await tx(servedCallRow('C-INJ', {
+      ...RECEIPT,
+      decision: 'REFUSED',
+      refusal: 'CORPUS_OUTSIDE_SCOPE',
+      because: `it said '); DROP TABLE served_call; --`,
+    }, SESSION, 'READ'));
+    const [survives] = await rows(`SELECT to_regclass('served_call')::text AS present`);
+    expect(survives.present).toBe('served_call');
+    const [row] = await rows(`SELECT because FROM served_call WHERE call_id = 'C-INJ'`);
+    expect(row.because).toBe(`it said '); DROP TABLE served_call; --`);
+  });
+});
+
+/**
+ * And the shape of the mistake, held structurally rather than case by case.
+ *
+ * Every test above names one value that carried syntax. A writer gains columns,
+ * and the next value added by hand is the one nobody wrote a case for. What is
+ * checkable without enumerating values is that this module never puts its own
+ * quotes around an interpolation: a value is escaped by `sqlText` or `sqlArray`
+ * or it is not a string literal at all.
+ */
+describe('this module quotes nothing by hand', () => {
+  it('has no interpolation sitting inside quotes of its own', () => {
+    const source = readFileSync('src/db/terminalLedger.ts', 'utf-8');
+    const handQuoted = source
+      .split('\n')
+      .map((line, index) => ({ line, at: index + 1 }))
+      .filter(({ line }) => /'\$\{/.test(line) && !line.trimStart().startsWith('*') && !line.trimStart().startsWith('//'));
+    expect(
+      handQuoted.map(({ at, line }) => `${at}: ${line.trim()}`),
+      'wrap the value in sqlText() or sqlArray() rather than quoting it here',
+    ).toEqual([]);
   });
 });
