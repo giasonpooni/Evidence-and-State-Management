@@ -18,6 +18,7 @@ import { GET as filingsRoute } from '@/app/api/v1/insurability/filings/route';
 import { GET as artifactRoute } from '@/app/api/v1/evidence/artifacts/[hash]/route';
 import { GET as traceRoute } from '@/app/api/v1/evidence/trace/[observationId]/route';
 import { NextRequest } from 'next/server';
+import { readFileSync } from 'node:fs';
 
 describe('The Verification Ladder: Rung 3 - End-to-End Lineage Trace', () => {
   it('traces a single record end-to-end: filings query -> artifact hash -> retained original bytes -> extraction run connecting them', () => {
@@ -193,5 +194,54 @@ describe('The Verification Ladder: Rung 3 - End-to-End Lineage Trace', () => {
       expect(filing.trace_url).toBeDefined();
       expect(filing.sourceArtifactDigest).toMatch(/^sha256:[a-f0-9]{64}$/);
     }
+  });
+});
+
+/**
+ * The ladder counts itself.
+ *
+ * The route's own header described the ladder it serves — "Seven of the eight
+ * rungs below carry a status word beginning with VERIFIED" — and it served
+ * seven rungs, six of them VERIFIED. Both numbers were wrong, in the file's
+ * account of its own payload, on a public route whose whole subject is what
+ * this system has and has not established.
+ *
+ * Nothing caught it because nothing counted. A rung is added or its status
+ * changes, and the sentence above it goes on describing the ladder that used
+ * to be there. So the numbers are read back out of the served payload and
+ * compared with the sentence, the way `queryCost.test.ts` reads its
+ * measurement table back and `admission.test.ts` reads the gate's count.
+ */
+describe('the ladder and the account of it cannot drift apart', () => {
+  const NUMBER_WORD = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+
+  it('states the rung counts it actually serves', async () => {
+    const data = await (await statusRoute()).json();
+    const rungs = data.declared_verification_ladder.rungs as Array<{ rung: number; status: string }>;
+    const verified = rungs.filter((entry) => entry.status.startsWith('VERIFIED'));
+
+    const header = readFileSync('src/app/api/v1/status/route.ts', 'utf-8');
+    const claim = /(\w+) of the (\w+) rungs below carry a status word beginning with VERIFIED/.exec(header);
+    expect(claim, 'the route should describe the ladder it serves').toBeTruthy();
+    expect(
+      [claim![1].toLowerCase(), claim![2].toLowerCase()],
+      'the header should count the rungs the payload carries',
+    ).toEqual([NUMBER_WORD[verified.length], NUMBER_WORD[rungs.length]]);
+  });
+
+  /* The rungs are a ladder: numbered from nothing, with no gaps and no repeats. */
+  it('serves a ladder rather than a set of numbers', async () => {
+    const data = await (await statusRoute()).json();
+    const rungs = data.declared_verification_ladder.rungs as Array<{ rung: number }>;
+    expect(rungs.map((entry) => entry.rung)).toEqual(rungs.map((_, index) => index));
+  });
+
+  /* And the rung it says it stands on is one of them, and is verified. */
+  it('stands on a rung it serves', async () => {
+    const data = await (await statusRoute()).json();
+    const ladder = data.declared_verification_ladder;
+    const current = (ladder.rungs as Array<{ rung: number; status: string }>).find((entry) => entry.rung === ladder.current_rung);
+    expect(current, `rung ${ladder.current_rung} should be one of the rungs served`).toBeTruthy();
+    expect(current!.status.startsWith('VERIFIED')).toBe(true);
   });
 });

@@ -20,7 +20,7 @@ import { getActiveParameterSet } from '@/domain/parameterRegistry';
  * answers UNKNOWN for exactly that reason — and a confident zero about a store
  * you cannot reach is the worst thing a status page can say about itself.
  *
- * Seven of the eight rungs below carry a status word beginning with VERIFIED,
+ * Six of the seven rungs below carry a status word beginning with VERIFIED,
  * and not one of them verifies anything at request time: no compiler runs, no
  * route is probed, no curl chain executes. They are assertions about what CI
  * established, so they live under a key that says so, with the party that
