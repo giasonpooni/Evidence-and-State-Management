@@ -2,7 +2,7 @@
 
 Notation Systems builds evidence-backed intelligence and operational controls for complex cross-border trade and industrial supply chains, specializing in transactions where verification is difficult and the consequences of error are substantial.
 
-Evidence and State Management is the internal preparation system. This increment consolidates the reviewed frontend baseline `6dd691a` into `codex/payload-os-foundation`, preserving the foundation history and existing local artifacts. It repairs persistence and catalog boundaries and adds an operator-only observation-package workflow. It does **not** claim a licensed customer delivery or a completed pilot.
+Evidence and State Management is the internal preparation system. It provides an operator-only observation-package workflow with persistent storage and bounded catalog access. It does **not** claim a licensed customer delivery or a completed pilot.
 
 ## Product and present authority
 

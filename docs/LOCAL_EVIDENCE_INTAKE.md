@@ -92,7 +92,7 @@ A process crash can leave an unreferenced object or temporary file. There is no 
 
 ## What was reused from Notations Bench
 
-The sibling `Notations Kernel` was studied read-only, including its `AGENTS.md`, `PROJECT_CONTEXT.md`, Caravan product contract and the source files below. The normalization, connector, corpus and profile tests were also reviewed. That historical inspection described its product boundary as NotationsOS shared rails with Caravan, Tradewind and Landshark owning their respective domains.
+The reference behavior comes from the Notations Kernel Caravan product contract and the source files below. These references separate shared infrastructure from the Caravan, Tradewind and Landshark domain contracts.
 
 | Bench source | Concrete lesson carried into this increment or retained for its successor |
 |---|---|

@@ -168,7 +168,7 @@ POST `/api/gat/audits` accepts only:
 
 The request is bounded to 8 KiB. IDs are 1–128 characters from letters, digits, `.`, `_`, `:`, `-`, beginning with a letter or digit. Purpose is bounded declared text without paths or control characters. Unknown fields, caller clocks, source replacements, arbitrary operations, and path/executable options are rejected. Accepted media declarations are `model/ifc`, `application/step`, and `application/x-step`.
 
-For Claude's frontend, after a successful production acquisition inspection:
+In the frontend, after a successful production acquisition inspection:
 
 ```javascript
 async function auditInspectedAcquisition(acquisitionInspection, requestId) {

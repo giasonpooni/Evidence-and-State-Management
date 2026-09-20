@@ -109,7 +109,7 @@ Inspection is read-only. It reopens and verifies the acquisition and bytes, reev
 
 ## What was learned from Notations Bench
 
-The following paths are in the read-only sibling `Notations Kernel`, studied with its `AGENTS.md`, `PROJECT_CONTEXT.md` and `docs/CARAVAN_API_PRODUCT.md`. They identify the actual reference behavior, not dependencies imported into this local runtime.
+The following Notations Kernel paths and `docs/CARAVAN_API_PRODUCT.md` identify the reference behavior. They are not dependencies imported into this local runtime.
 
 | Bench evidence | Application and boundary here |
 |---|---|

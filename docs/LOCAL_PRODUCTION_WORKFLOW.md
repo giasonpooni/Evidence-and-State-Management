@@ -1,6 +1,6 @@
 # Local acquisition-to-candidate workflow
 
-Claude's frontend can now operate the existing local evidence rail: corpus/source registration → bounded acquisition → evidence inspection → fixed Carrier normalization → candidate-build assembly and inspection. These are real local artifacts and receipts, not fixture responses. They do not change released fixtures, authored notation state, resolved identity, canonical corpus state or admission.
+The frontend operates the local evidence rail: corpus/source registration → bounded acquisition → evidence inspection → fixed Carrier normalization → candidate-build assembly and inspection. These are real local artifacts and receipts, not fixture responses. They do not change released fixtures, authored notation state, resolved identity, canonical corpus state or admission.
 
 ## Start and boundaries
 

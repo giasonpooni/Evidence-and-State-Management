@@ -109,7 +109,7 @@ A separately launched [candidate-build review worker](CANDIDATE_BUILD_REVIEW_WOR
 
 Every saved build explicitly declares `state: "UNADMITTED"`, `mode: "LOCAL_DEVELOPMENT"` and `policyAuthority: "OPERATOR_DECLARATION"`. Its flags `canonicalAdmission`, `canonicalStateMutated`, `identityResolved`, `releaseActivated`, `sourceTruthClaimed`, `independentlyVerified` and `completenessClaimed` are all false. Local recomputation establishes consistency with the stored declarations and bytes, not authenticated authorship, source truth, field accuracy or independent verification.
 
-The sibling `Notations Kernel` was studied read-only, including `AGENTS.md`, `PROJECT_CONTEXT.md` and the following build/admission sources and tests:
+The following Notations Kernel build/admission sources and tests define the reference behavior:
 
 | Bench evidence | Concrete lesson and local boundary |
 |---|---|
