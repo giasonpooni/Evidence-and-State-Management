@@ -1,5 +1,8 @@
 # Notation Systems mandate
 
+For the current public component inventory and integration boundaries, see the
+[Notation Systems stack map](https://github.com/giasonpooni/Computational-Instrumentation-Workbench/blob/main/docs/STACK.md) and [this component's role](STACK_ROLE.md).
+
 Current technical identity and repository naming, 2026-09-20.
 
 Notation Systems develops computational instrumentation and evidence infrastructure

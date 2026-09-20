@@ -1,5 +1,9 @@
 # Evidence and State Management
 
+Part of **Notation Systems' computational instrumentation and evidence infrastructure** for industrial and cyber-physical systems.
+
+[Stack map](https://github.com/giasonpooni/Computational-Instrumentation-Workbench/blob/main/docs/STACK.md) · [Component role and interfaces](docs/STACK_ROLE.md)
+
 **Provenance-aware evidence, versioned state, admission, and release management.**
 
 Evidence and State Management is the information-retention and governance component
