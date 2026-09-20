@@ -1,14 +1,31 @@
 # Economic architecture
 
-Current positioning, as set by the founder on 2026-09-09. The mandate is evidence-backed intelligence and operational controls for complex cross-border trade and industrial supply chains. Earlier economic formulations and implementation receipts are retained below as history; they are not active product commitments or a current capability inventory.
+Current technical positioning and repository naming, 2026-09-20. The
+instrumentation mandate extends the existing information-production business.
+Earlier economic formulations and dated implementation receipts remain historical
+records; they are not current capability claims.
 
 ## The firm
 
-Notation Systems builds evidence-backed intelligence and operational controls for complex cross-border trade and industrial supply chains, specializing in transactions where verification is difficult and the consequences of error are substantial.
+Notation Systems develops computational instrumentation and evidence infrastructure
+for industrial and cyber-physical systems. Its systems connect observations,
+mathematical models, declared computation and governed information. Existing
+trade, industrial, infrastructure and risk intelligence remain applications of
+that shared substrate.
 
-Its internal production system turns local records and physical observations into provenance-bearing computational corpora through acquisition, extraction, normalization, identity, ontology, computation, storage, indexing, verification, release, correction, and recall.
+Evidence and State Management retains source material, time-qualified records,
+identity, rights, candidate review, admission, releases, correction and recall.
+Scientific Computation Runtime owns declared scientific execution; Computational
+Instrumentation Workbench provides instrument sessions, adapters, inspection and
+replay. These responsibilities are complementary, and their current repository
+locations are listed in the [stack responsibility table](../README.md#stack-responsibilities).
 
-The corpora are the information inventory from which the firm prepares boutique trade and industrial risk intelligence packages. A package defines its fields, coverage, methods, quality, provenance, version and permitted use. APIs, feeds, reports and MCP tools can distribute the prepared information. Customers apply their own inference, models, agents and workflows to delivered data; the firm's workbenches are internal preparation and inspection tools.
+The corpora remain the information inventory from which the firm prepares trade and industrial intelligence packages,
+analytics and evidence-backed dossiers. Each package declares fields, coverage,
+methods, quality, provenance, version and permitted use. Dossier Services retains
+the information-delivery role. APIs, feeds, reports and MCP tools distribute
+prepared information; implemented instruments do not themselves establish a
+completed commercial delivery.
 
 ## Geographic mandate
 
@@ -36,28 +53,31 @@ Internal computation supports preparation and quality review. Hosted customer co
 
 ## Product architecture
 
-The founder's 2026-09-06 distinction between internal terminal and customer
-products continues under the 2026-09-08 boutique-data mandate.
+| Component or line | Responsibility |
+|---|---|
+| Notation Systems | The firm developing computational instrumentation and evidence infrastructure |
+| Evidence and State Management | Evidence retention, time-qualified state, admission, rights and release operations, including a local operational terminal |
+| Scientific Computation Runtime | Declared scientific workloads and provenance-bearing execution |
+| Computational Instrumentation Workbench | Instrument sessions, adapters, inspection and replay |
+| Caravan | Logistics, freight, cargo and supply-chain information |
+| Tradewind | Markets, instruments, pricing and risk information |
+| Landshark | Parcels, zoning, entitlements and development-state information |
+| Dossier Services | Curation, compilation and delivery of the information products |
 
-```
-Notation Systems Inc. — licensed data and analytics packages
-├─ Caravan   — logistics, freight, cargo, supply-chain movement
-├─ Tradewind — markets, instruments, pricing, risk
-└─ Landshark — parcels, zoning, entitlements, development state
+The technical component names do not add domain product lines. HTTP feeds and MCP
+tools remain delivery interfaces over the corpora. The licensed package's
+information and scope are the customer value; customers can apply their own
+inference to what they receive.
 
-   NotationsOS — the internal terminal: operates, monitors and navigates the
-                backend those three are produced from. Not sold.
-```
+This repository includes its existing internal preparation and review terminal;
+it is broader than that terminal and does not replace the separate Computational
+Instrumentation Workbench. Existing UI labels, package names, contracts and
+historical identifiers remain compatible. The rename alone establishes no new
+customer-facing software offering.
 
-**The three lines organize trade and industrial risk intelligence packages.** HTTP feeds
-and MCP tools are existing delivery interfaces over their corpora. The licensed
-package's information and scope are the customer value. Customers can apply
-their own inference to what they receive.
-
-**NotationsOS is the terminal, not a product.** It is the instrument the firm runs
-the backend from: acquisition, evidence, normalization, candidates, releases,
-corrections and the coordination facilities. This repository is that terminal. It
-is not a fourth API and it is not offered to customers.
+The retained interface contract, "NotationsOS is the terminal, not a product",
+continues to describe the existing terminal label in `src/domain/domains.ts`.
+Evidence and State Management names the broader repository responsibility.
 
 ## The concise formulation
 
@@ -77,7 +97,7 @@ Providing the data interface is sufficient for a customer to use the information
 - Provenance that survives downstream use, audit, and resale.
 - A customer can automate a decision against the feed without blindly trusting a black box.
 
-## Shared production facilities inside NotationsOS
+## Shared production facilities inside Evidence and State Management
 
 Current implementation boundary: PostgreSQL/Drizzle corpus storage and a guarded
 admission writer are wired when configured. Admission, issued-identifier
@@ -93,7 +113,7 @@ established. See [Statutory harvester](STATUTORY_HARVESTER.md),
 
 Two internal facilities are implemented as local rails. Neither is a customer product, and neither creates canonical domain state.
 
-The agent and apparatus stable and shared message board are internal coordination facilities within NotationsOS. They record participant definitions and their working contracts, expose compatible connections and missing inputs, and carry scoped requests, handoffs, blockers, results and acknowledgements. A participant inbox and JavaScript/Python clients let local processes coordinate through these records. A manually started local contract-review worker reports declared suppliers and missing inputs, then acknowledges the request. A separate candidate-build-review worker can inspect an exact local build reference and report a bounded historical observation before acknowledging; it grants no retrieval or admission authority. This supports assembly of the shared production system. It does not change the customer categories, make inference a requirement for buying the corpus, or establish managed customer compute. The implementations and present limits are recorded in [Agent coordination](AGENT_COORDINATION.md) and [Candidate-build review worker](CANDIDATE_BUILD_REVIEW_WORKER.md).
+The agent and apparatus stable and shared message board are internal coordination facilities within Evidence and State Management. They record participant definitions and their working contracts, expose compatible connections and missing inputs, and carry scoped requests, handoffs, blockers, results and acknowledgements. A participant inbox and JavaScript/Python clients let local processes coordinate through these records. A manually started local contract-review worker reports declared suppliers and missing inputs, then acknowledges the request. A separate candidate-build-review worker can inspect an exact local build reference and report a bounded historical observation before acknowledging; it grants no retrieval or admission authority. This supports assembly of the shared production system. It does not change the customer categories, make inference a requirement for buying the corpus, or establish managed customer compute. The implementations and present limits are recorded in [Agent coordination](AGENT_COORDINATION.md) and [Candidate-build review worker](CANDIDATE_BUILD_REVIEW_WORKER.md).
 
 The local evidence rail is another shared production facility: it evaluates a declared source policy, captures local bytes with a storage receipt and reopens the acquisition for integrity checks. Its authorization basis is an operator declaration. Capture alone creates no normalized record. A separate local normalization step evaluates INTERNAL DERIVE and parses a fixed Caravan Carrier JSON contract into a source-scoped, unresolved and unadmitted candidate, or persists a quarantine with no candidate. A subsequent local candidate builder assembles explicitly selected candidates under a definition and knowledge cutoff, reopening their evidence and separately evaluating DERIVE at build time. Its manifest remains unadmitted; none of these steps creates canonical domain state, admits a corpus or activates a release. The implementations are documented in [Local evidence intake](LOCAL_EVIDENCE_INTAKE.md), [Local normalization](LOCAL_NORMALIZATION.md) and [Local candidate builds](LOCAL_CANDIDATE_BUILDS.md).
 
@@ -103,7 +123,7 @@ The [synthesized architecture](SYNTHESIZED_ARCHITECTURE.md) organizes internal r
 
 ## Rules for this repository
 
-- Lead with the prepared data and analytics, their scope and licensed use.
+- Name the component's verified engineering responsibility and distinguish it from delivered information products, their scope and licensed use.
 - Internal software prepares and inspects packages; its instrument count is not a measure of customer delivery.
 - Distinguish implemented mechanisms, demonstrated runs, retained real records, deployed operations and delivered customer products. A gate result or a database dependency alone establishes none of the later stages.
 - Preserve source restrictions and historical evidence; a new mandate does not change the authority under which old material was acquired.

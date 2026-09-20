@@ -1,77 +1,82 @@
 # Notation Systems mandate
 
-Current founder statement, 2026-09-08:
+Current technical identity and repository naming, 2026-09-20.
 
-Notation Systems builds evidence-backed intelligence and operational controls for complex cross-border trade and industrial supply chains, specializing in transactions where verification is difficult and the consequences of error are substantial.
+Notation Systems develops computational instrumentation and evidence infrastructure
+for industrial and cyber-physical systems. It connects observations, mathematical
+models, computation, inspection and governed information over provenance-bearing
+state. This extends the firm's existing physical-economy information-production
+mandate and preserves its implemented acquisition, corpus, policy and release
+mechanisms.
 
-Its internal production system turns authorized heterogeneous source material
-into provenance-bearing computational corpora through acquisition, extraction,
-normalization, identity, ontology, computation, storage, indexing,
-verification, release, correction, and recall.
+## Evidence and State Management
 
-The corpora are the information inventory from which the firm prepares boutique
-data and analytics packages. Each package defines its fields, coverage,
-methods, quality, provenance, version and permitted use. HTTP feeds and MCP
-tools are existing delivery interfaces. Customers can apply inference and
-workflows to the data they license. The firm's workbenches and scientific
-instruments prepare and inspect information internally.
+**Provenance-aware evidence, versioned state, admission, and release management.**
 
-Notation Systems is not a scraper, data marketplace, generic AI-agent company,
-or universal database. Scraping and engineering are internal means of
-production.
+This repository retains and governs information: acquired material, time-qualified
+observations and records, identity, rights, candidate review, admission, releases,
+corrections and recall. It includes local preparation and operational interfaces.
+Its scope spans physical-economy corpora, business information, operational review
+and scientific evidence. It is not an operating-system kernel or the entire
+Computational Instrumentation Workbench.
 
-## Customers
+Scientific Computation Runtime specifies, dispatches and records declared
+scientific computations. Computational Instrumentation Workbench provides the
+sessions, adapters, inspection and replay environment. Evidence and State
+Management retains and governs the information they reference. The
+[stack responsibility table](../README.md#stack-responsibilities) gives current
+repository locations and preserves each component's boundary. It records roles,
+not a claim of completed integration.
 
-The customer categories are physical-economy firms:
+## Information products and delivery
 
-- Brokers
-- Asset and portfolio managers
-- Insurance and financing firms
+Caravan, Tradewind and Landshark retain their domain responsibilities:
 
-They share the problem of insufficient computable information about physical
-assets, flows, conditions, counterparties, exposures, and changes over time.
+| Line | Information scope |
+|---|---|
+| Caravan | Logistics, freight, cargo, supply-chain movement and physical networks |
+| Tradewind | Markets, instruments, pricing, exposures and risk |
+| Landshark | Parcels, zoning, entitlements, development state and spatial constraints |
 
-## Economic architecture
+The corpora remain the information inventory for prepared data, analytics and
+evidence-backed dossiers. Dossier Services is the information-delivery identity
+already represented in `src/domain/firmIdentity.ts`; it is not a fourth domain
+corpus. Packages state fields, coverage, methods, quality, provenance, version and
+permitted use. HTTP feeds and MCP tools are existing delivery interfaces.
 
-Acquire permitted data → prepare data and analytics → package and license it
-→ maintain its quality, provenance and correction history.
+The relevant domains include manufacturing and industrial operations, procurement,
+logistics, distribution, insurance, finance and infrastructure. A technical
+instrument or demonstration does not establish a deployed service, validated
+physical model, completed customer delivery or authority to operate equipment.
+Hosted customer workloads and principal trading are not established offerings.
 
-Internal operating costs and customer delivery records support this business.
-Hosted customer workloads and principal trading are not active product
-commitments under this mandate. Earlier discussions remain historical context.
-Existing restrictions on customer information, proprietary strategy, trading
-and redistribution remain in force; positioning grants no new permission.
+## Protected boundaries
 
-## Product structure
+Evidence, observation, claim, canonical state, representation, model, execution
+and verification retain distinct identities. Source evidence is preserved;
+canonical versions cross explicit admission; inquiry can contain hypotheses;
+projections do not mutate their sources. Execution receipts record what ran and
+do not substitute for independent verification.
 
-```text
-Notation Systems Inc. — evidence-backed intelligence
-├─ Caravan: logistics, freight, cargo, supply-chain movement
-├─ Tradewind: markets, instruments, pricing, and risk
-└─ Landshark: parcels, zoning, entitlements, and development state
-
-Internal preparation and operations: NotationsOS and the underlying systems
-```
-
-Caravan, Tradewind and Landshark organize the data-product lines, with HTTP feeds
-and MCP tools as existing delivery interfaces. NotationsOS is the internal terminal that
-operates, monitors and navigates the backend those three are produced from. It
-is not sold, it is not a fourth customer-facing API, and it is not a universal
-domain database. The internal-terminal distinction from 2026-09-06 continues
-under the current boutique-data mandate.
+The repository rename from `PayLoad-OS` does not rename existing packages,
+schemas, operation IDs, environment variables, stored evidence, saved execution
+records or historical runtime pins. Existing terminal/product labels remain
+compatibility names where they identify retained interfaces or historical state.
+Source-use, customer-information and redistribution restrictions remain attached
+to the information; the broader mandate creates no new permission.
 
 ## Current implementation boundary
 
-Notations Bench remains a reference for the shared corpus, provenance, policy,
-release and verification machinery. All three product lines now carry
-demonstration corpora. Local evidence and normalization rails, bounded
-connectors, admission and identity/time rules, PostgreSQL integration, and
-internal computation are implemented to varying scopes. The supplied-byte
-statutory harvester can evaluate admission in memory; that result does not
-itself retain a production release. Historical FMCSA qualification is distinct
-from recurring source operation.
+All three domain lines carry demonstration corpora. Local evidence and
+normalization rails, bounded connectors, admission and identity/time rules,
+PostgreSQL integration and internal computation are implemented to varying
+scopes. The supplied-byte statutory harvester can evaluate admission in memory;
+that result does not itself retain a production release. Historical bounded
+FMCSA qualification is distinct from recurring source operation; Samsara is
+offline-tested.
 
-Implementation is distinct from retained real data, deployed operation and a
-completed licensed customer delivery. A completed customer package and pilot
-are not established by this repository. See [Economic architecture](ECONOMIC_ARCHITECTURE.md)
-for the current boundary and the explicitly historical earlier record.
+The existing local Rust notation kernel manages authored workspace state; it is
+separate from canonical corpus state. Internal recomputation is distinct from
+independent verification. A completed licensed customer package and pilot are not
+established by this repository. See [Economic architecture](ECONOMIC_ARCHITECTURE.md)
+and the README capability inventory for the present boundary.

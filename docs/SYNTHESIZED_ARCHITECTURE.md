@@ -1,25 +1,39 @@
 # Synthesized architecture
 
-This document records the supplied synthesis of the earlier architecture: one maintained information substrate, five fabrics and several explicitly non-authoritative projection instruments. It describes target responsibilities and distinguishes them from the bounded local implementation. [Economic architecture](ECONOMIC_ARCHITECTURE.md) and [Company mandate](COMPANY_MANDATE.md) retain the business and product boundaries.
+This architecture retains one maintained information substrate, five fabrics and
+explicitly non-authoritative projection instruments. It describes responsibility
+boundaries and distinguishes them from the bounded local implementation.
+[Company mandate](COMPANY_MANDATE.md) and
+[Economic architecture](ECONOMIC_ARCHITECTURE.md) record the current engineering
+identity and information-product boundaries.
 
-## Firm and product structure
+## Firm and component structure
 
-Notation Systems builds evidence-backed intelligence and operational controls for complex cross-border trade and industrial supply chains, specializing in transactions where verification is difficult and the consequences of error are substantial.
+Notation Systems develops computational instrumentation and evidence infrastructure
+for industrial and cyber-physical systems. The existing trade, industrial,
+infrastructure and risk corpora continue on that shared substrate.
 
-Acquisition, scraping, extraction, normalization, identity, ontology, computation, storage, indexing, verification, correction and recall are internal means of production. The corpora supply the inventory for trade and industrial intelligence packages. The firm's workbenches inspect and prepare that information; HTTP feeds and MCP tools are existing distribution interfaces. Customers may apply their own inference to the data they license.
+Evidence and State Management is this repository's stable responsibility:
+provenance-aware evidence, versioned state, admission and release management.
+It includes local preparation, review and operational interfaces while preserving
+the broader physical-economy, business, rights and scientific-evidence scope.
 
-The customer categories remain physical-economy brokers, asset and portfolio managers, and insurance and financing firms. The active business is preparation and licensing of trade and industrial intelligence. Internal computation supports it; hosted customer workloads and principal trading are outside the active offering. Existing source-use and customer-data restrictions remain attached to information through preparation and delivery.
+Scientific Computation Runtime specifies, dispatches and records declared
+scientific computations. Computational Instrumentation Workbench provides
+instrument sessions, adapters, inspection and replay. The
+[stack responsibility table](../README.md#stack-responsibilities) links the
+acquisition, visualization, evaluation and reconciliation components as well.
+A role table does not establish a working adapter or production integration.
 
-```text
-Notation Systems Inc. — licensed data and analytics packages
-├─ Caravan — logistics, freight, cargo and supply-chain movement
-├─ Tradewind — markets, instruments, pricing and risk
-└─ Landshark — parcels, zoning, entitlements and development state
+Caravan, Tradewind and Landshark retain domain ownership; Dossier Services retains
+the information-delivery role. HTTP feeds and MCP tools are existing distribution
+interfaces. Internal research instruments do not establish managed customer
+workloads, completed customer delivery or authority to control physical systems.
 
-NotationsOS — internal terminal for preparing and operating the information inventory
-```
-
-The synthesis calls historical `PayloadOS` an ancestor of the five fabrics. That historical mapping is retained below. **NotationsOS** remains the internal terminal; Caravan, Tradewind and Landshark organize data-product lines delivered through existing API/MCP interfaces. The 2026-09-08 mandate places licensed information at the customer boundary. Domain ownership, existing routes and historical entity ids/digests are unchanged.
+Historical PayloadOS and NotationsOS labels, internal STE/SCL/SIL names, package
+names, schema identifiers, evidence digests and runtime pins retain their meaning.
+The repository rename does not rewrite the records below. A new representation
+or engine extends the shared substrate and crosses the same admission boundary.
 
 ## Five fabrics over one substrate
 
@@ -100,7 +114,7 @@ These mappings preserve the supplied synthesis without silently promoting old co
 | Oracle | Query/compute service role |
 | Odyssey | Exploration/inquiry workflow |
 | Librarian | Operator/interface role |
-| PayloadOS | Historical ancestor wording in the synthesis; current NotationsOS is the internal terminal over the backend behind the Caravan, Tradewind and Landshark APIs |
+| PayloadOS | Historical ancestor wording in the synthesis; current Evidence and State Management retains and governs information and includes the local terminal behind the Caravan, Tradewind and Landshark interfaces |
 | DAF | Acquisition Fabric |
 | EvidencePool | Evidence substrate |
 | Immutable graph | Structural representation of the corpus, not the whole corpus or a universal canonical database |

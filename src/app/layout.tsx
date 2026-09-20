@@ -12,11 +12,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'NotationsOS',
-    template: '%s · NotationsOS',
+    default: 'Evidence and State Management',
+    template: '%s · Evidence and State Management',
   },
   description:
-    'NotationsOS — Notation Systems\u2019 internal terminal: it operates, monitors and navigates the backend behind the Caravan, Tradewind and Landshark APIs, building evidence-backed intelligence for complex cross-border trade and industrial supply chains.',
+    'Evidence and State Management — provenance-aware evidence, versioned state, admission, and release management for Notation Systems computational instrumentation and information products.',
   robots: { index: false, follow: false },
   authors: [{ name: 'Notation Systems' }],
 };

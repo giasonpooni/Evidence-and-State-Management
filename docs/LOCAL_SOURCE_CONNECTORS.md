@@ -1,6 +1,6 @@
 # Local source connectors
 
-NotationsOS has an operator-only acquisition connector for **FMCSA Company Census**, dataset `az4n-8mr2`. It feeds the existing local evidence rail, not the fixture customer API. The source is `fmcsa-company-census`; the prototype's `fmcsa-qcmobile` remains a different, credential-dependent API. See the [source connector reference](LOCAL_SOURCE_CONNECTORS.md) for the implemented source boundary.
+Evidence and State Management has an operator-only acquisition connector for **FMCSA Company Census**, dataset `az4n-8mr2`. It feeds the existing local evidence rail, not the fixture customer API. The source is `fmcsa-company-census`; the prototype's `fmcsa-qcmobile` remains a different, credential-dependent API. See the [source connector reference](LOCAL_SOURCE_CONNECTORS.md) for the implemented source boundary.
 
 ## Exact initial slice
 

@@ -1,15 +1,48 @@
-# NotationsOS · Notation Systems
+# Evidence and State Management
 
-Notation Systems Inc. is an information technology company. We transform, organize, and license real-world data and analytics for business, risk, and market applications.
+**Provenance-aware evidence, versioned state, admission, and release management.**
 
-The firm uses its systems internally to prepare boutique data and analytics
-packages from acquired information. **Caravan, Tradewind and Landshark are the
-data-product lines; HTTP feeds and MCP tools are existing delivery interfaces.**
-This repository holds **NotationsOS, the internal terminal** for preparation,
-quality review and operations. It is not sold. Positioning is set in
-[`docs/ECONOMIC_ARCHITECTURE.md`](docs/ECONOMIC_ARCHITECTURE.md), corrected by the
-founder on 2026-09-08. Internal compute supports package preparation; hosted
-customer workloads and principal trading are outside the active offering.
+Evidence and State Management is the information-retention and governance component
+of Notation Systems' computational instrumentation stack. It preserves source
+material, organizes time-qualified observations and records, evaluates admission,
+and manages releases, rights, correction and recall. Its scope includes
+physical-economy corpora, business information, operational review and scientific
+evidence; it is not restricted to scientific data storage.
+
+Notation Systems develops computational instrumentation and evidence infrastructure
+for industrial and cyber-physical systems. This extends the existing
+information-production mandate: Caravan, Tradewind and Landshark retain their
+domain responsibilities, and Dossier Services retains the information-delivery
+role. The implemented local terminal, corpus preparation rails and review
+interfaces in this repository continue to support those responsibilities.
+[Company mandate](docs/COMPANY_MANDATE.md) and
+[Economic architecture](docs/ECONOMIC_ARCHITECTURE.md) distinguish the technical
+mandate, existing delivery interfaces and present operating limits.
+
+The repository was previously named `PayLoad-OS`. Existing `payload-os` package
+names, `payload.*` and `notationsos.*` contracts, `notation://` identities,
+environment variables, local `.payload` storage and retained runtime pins remain
+compatibility identities. Existing interface labels such as NotationsOS and
+PayloadOS may still identify those internal components; they are not the current
+repository title. Historical records are not relabeled into new evidence.
+
+## Stack responsibilities
+
+| Component | Responsibility and boundary |
+|---|---|
+| [Evidence and State Management](https://github.com/giasonpooni/Evidence-and-State-Management) | Retains and governs evidence, time-qualified state, admission and release. This repository also contains its local operational terminal. |
+| [Provenance-Preserving Data Acquisition](https://github.com/giasonpooni/Provenance-Preserving-Data-Acquisition) | Acquires source material and produces observations while preserving source identity, extraction lineage and explicit missingness. Acquisition alone does not admit canonical state. |
+| [Scientific Computation Runtime](https://github.com/giasonpooni/Scientific-Computation-Runtime) | Specifies, dispatches and records declared scientific computations over versioned scientific state. Numerical execution remains separate from information admission. |
+| [Geospatial State Visualization](https://github.com/giasonpooni/Geospatial-State-Visualization) | Presents geographic entities, routes, flows and temporal state through a read-only globe client. A view is a projection, not a separate authority. |
+| [State Estimation Evaluation Testbed](https://github.com/giasonpooni/State-Estimation-Evaluation-Testbed) | Evaluates state reconstruction under declared observation degradation. Specification-stage responsibilities do not establish implemented estimators. |
+| [Constraint-Based State Reconciliation](https://github.com/giasonpooni/Constraint-Based-State-Reconciliation) | Specifies reconciliation against declared constraints, with uncertainty and correction diagnostics. Method-neutral scope; specification-stage operations are not implementation claims. |
+| [Computational Instrumentation Workbench](https://github.com/giasonpooni/Computational-Instrumentation-Workbench) | Provides instrument sessions, adapters, inspection and replay. It is the working environment; this repository retains and governs the information those activities reference. |
+
+These are component responsibilities, not a claim that every cross-repository
+adapter is connected. The evidence, operation specification, execution attempt,
+result and verification identities remain distinct. A computed result enters
+governed state only through an explicit admission boundary. Naming changes grant
+no new acquisition, execution, redistribution or physical-control authority.
 
 ## What is actually here
 
@@ -337,15 +370,15 @@ Typecheck also rejects unused locals and parameters. [Codebase consolidation](do
 
 ## Read
 
-- `docs/ECONOMIC_ARCHITECTURE.md` — current boutique data-and-analytics mandate, internal preparation boundary, implementation status and explicitly superseded historical economic formulations.
-- `docs/COMPANY_MANDATE.md` — the company mandate, customer categories, economic architecture, and NotationsOS product structure.
+- `docs/ECONOMIC_ARCHITECTURE.md` — current instrumentation and information-production mandate, internal preparation boundary, implementation status and explicitly superseded historical economic formulations.
+- `docs/COMPANY_MANDATE.md` — the company mandate, customer categories, economic architecture, and the evidence/state component's place in the stack.
 - `docs/SYNTHESIZED_ARCHITECTURE.md` — five fabrics, seven doctrine invariants, historical concept mapping and target runtime/projection responsibilities; implemented boundaries are explicit.
 - `docs/PROJECTION_FABRIC.md` — exact fixture ProjectionSpec, read-only preview example, identity-preserving records/graph, rights/time gates and explicit missing geometry; no renderer implementation.
 - `docs/UX_ARCHITECTURE.md` — object model, navigation, projections, component boundaries, the authority boundary.
 - `docs/WORKSPACE_DESIGN.md` — the design language, the one shell, the inspector pattern, the notation and candidate-production slices built on it, and the verification receipt.
 - `docs/STATUTORY_HARVESTER.md` — the insurance-regulator rail: the declared per-jurisdiction header grammar and its four presence states, why a filing supplies the two stages the census rail is missing, what is a claim and what is a coordinate, the two as-of questions, and the two boundaries the payload states rather than implies — nothing collected, nothing written.
 - `docs/PRODUCTION_PATH.md` — the production path: seven stages with states derived from the rail's receipts, identities and recovery, the real source readback, the notation and release blockers, and the receipt.
-- `docs/EARTH_TWIN.md` — the NotationsOS Earth Twin: the projection fabric's CesiumJS instrument built on God's Eye View's globe stack, keyless and offline, with every layer's source and state, the corpus asked for honestly, the signal-source registry, current limits and the receipt.
+- `docs/EARTH_TWIN.md` — the local Earth Twin: the projection fabric's CesiumJS instrument built on God's Eye View's globe stack, keyless and offline, with every layer's source and state, the corpus asked for honestly, the signal-source registry, current limits and the receipt.
 - `docs/AGENT_COORDINATION.md` — the shared agent/apparatus stable, scoped board and inbox, contract synastry, JavaScript/Python clients, local worker and Bench references.
 - `docs/LOCAL_EVIDENCE_INTAKE.md` — local source-policy evaluation, content-addressed evidence, acquisition receipts, inspection and Bench-derived boundaries.
 - `docs/LOCAL_SOURCE_CONNECTORS.md` — operator-only live FMCSA Company Census qualification, strict transport, original-byte capture, permanent request bounds and historical inspection.

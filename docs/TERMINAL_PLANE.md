@@ -1,10 +1,12 @@
 # The control plane a terminal plugs into
 
-Payload OS is a data control and mining substrate. NotationsOS is one terminal
-over it — the firm's own — and it is not the only one there should be. A second
-terminal, belonging to a customer or to another system, should be able to plug
-in and operate the substrate: ask it things, be answered some of them, be
-refused the rest with a reason, and leave a record of having asked.
+Evidence and State Management retains and governs evidence, time-qualified state,
+admission and releases. Its existing internal terminal is one interface over
+those facilities. This document describes the governed call boundary another
+terminal can use: ask for a declared purpose, receive an answer or a refusal with
+a reason, and leave a receipt. The Computational Instrumentation Workbench has
+the separate instrument-session and replay role; a terminal connection does not
+transfer admission, execution or physical-control authority.
 
 The difference between that and a feed with a schema is three facts about every
 call. Who is asking. What for. And whether that party, for that purpose, may

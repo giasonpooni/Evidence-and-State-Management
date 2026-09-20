@@ -1,6 +1,6 @@
 # Workspace design: one terminal, shared instruments
 
-NotationsOS is the firm's internal workspace for preparing its data products. This document records the shared design language and interaction patterns, the surfaces built on them, and the truths the design must preserve. The dated verification receipts describe the version tested at that time, not a guarantee about subsequent changes.
+Evidence and State Management retains and governs information and includes the firm's internal workspace for evidence preparation, state inspection, admission and release review. This document records the shared design language and interaction patterns, the surfaces built on them, and the truths the design must preserve. The dated verification receipts describe the version tested at that time, not a guarantee about subsequent changes.
 
 ## The design language
 
