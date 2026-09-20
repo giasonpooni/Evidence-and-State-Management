@@ -2,6 +2,7 @@
   "name": "payload-os",
   "version": "0.1.0",
   "private": true,
+  "license": "UNLICENSED",
   "description": "Evidence and State Management — provenance-aware evidence, versioned state, admission, and release management.",
   "scripts": {
     "predev": "node scripts/earth-assets.mjs",

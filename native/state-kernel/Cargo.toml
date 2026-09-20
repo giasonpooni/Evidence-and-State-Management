@@ -3,6 +3,7 @@ name = "notations-state-kernel"
 version = "0.1.0"
 edition = "2021"
 publish = false
+license-file = "../../LICENSE"
 description = "Deterministic, bounded notation-state replay kernel"
 
 [dependencies]
