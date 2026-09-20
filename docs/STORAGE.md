@@ -22,15 +22,6 @@ and by committed demonstration fixtures. `package.json` declares `pg` and
 `drizzle-orm`; it declares no object store, search index, graph, vector store
 or geospatial dependency.
 
-### The precondition that is now owed
-
-This document previously said the lakehouse should follow the admission
-authority, because without one there is no canonical version to store. The
-tables arrived first. That is a live risk rather than a settled sequence: rows
-in `releases` and `records` are canonical-shaped, so until admission exists
-something must keep an unadmitted candidate from being written there as though
-it were a version. The gate is what the store still needs.
-
 ## The six classes
 
 | Information | Store kind | Candidates | Fabric | Here |
@@ -70,20 +61,3 @@ the rule it is bound by:
   authority. A coordinate is only as good as the frame and the transform that
   produced it, and no graph layout or model geometry becomes a geographic
   position without an explicit transform and evidence for that interpretation.
-
-## Sequence
-
-1. **Object storage first.** It is the only class whose information already
-   exists in volume and whose invariant is already enforced by the evidence
-   rail.
-2. **The records store arrived before the admission authority.** The intended
-   order was the reverse, because a store holding candidates implies they were
-   admitted. Since it did not happen that way, the admission gate is owed
-   before anything writes a candidate into a canonical-shaped row.
-3. **Search and geospatial are projections** of an admitted corpus and are
-   rebuildable from it, so they can arrive late.
-4. **The graph waits on one identity authority**, and the vector store on
-   declared models with recomputable inputs.
-
-Each class also records what has to be true before choosing one at all; the
-data in `src/domain/storage.ts` is the authority for that list.

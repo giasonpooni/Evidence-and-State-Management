@@ -1,6 +1,6 @@
 # Local source connectors
 
-NotationsOS has an operator-only acquisition connector for **FMCSA Company Census**, dataset `az4n-8mr2`. It feeds the existing local evidence rail, not the fixture customer API. The source is `fmcsa-company-census`; the prototype's `fmcsa-qcmobile` remains a different, credential-dependent API. See the [market-value connection queue](SOURCE_CONNECTION_PROGRAM.md) for all 21 inventoried sources and their blockers.
+NotationsOS has an operator-only acquisition connector for **FMCSA Company Census**, dataset `az4n-8mr2`. It feeds the existing local evidence rail, not the fixture customer API. The source is `fmcsa-company-census`; the prototype's `fmcsa-qcmobile` remains a different, credential-dependent API. See the [source connector reference](LOCAL_SOURCE_CONNECTORS.md) for the implemented source boundary.
 
 ## Exact initial slice
 
@@ -51,7 +51,7 @@ This is a trusted-local-filesystem mechanism: hashes detect inconsistencies, not
 
 Offline transport, parser, capture-history and CLI tests live in `src/acquisition/*.test.ts`. They never contact a provider. Run `npm run check`; `npm run e2e:production` additionally checks the existing built application and local production workflows. Live qualification is a separate explicit command using the guarded connector, never an ordinary CI test.
 
-Continue one eligible source at a time through [SOURCE_CONNECTION_PROGRAM.md](SOURCE_CONNECTION_PROGRAM.md). Reuse the evidence and immutable-intent approach, but do not broaden this FMCSA endpoint allowlist or reuse its source policy for another provider. Each source needs its own bounded request, parser, current rights basis and acceptance evidence. High-value sources lacking credentials or compatible rights remain blocked while the next eligible source advances.
+Continue one eligible source at a time through [LOCAL_SOURCE_CONNECTORS.md](LOCAL_SOURCE_CONNECTORS.md). Reuse the evidence and immutable-intent approach, but do not broaden this FMCSA endpoint allowlist or reuse its source policy for another provider. Each source needs its own bounded request, parser, current rights basis and acceptance evidence. High-value sources lacking credentials or compatible rights remain blocked while the next eligible source advances.
 
 Live acceptance results are recorded below only after the operator command and separate local readback have actually run.
 

@@ -125,7 +125,7 @@ The adapter starts only `.stamp/production-worker.mjs` through the current Node 
 
 The production worker does not fetch provider URLs, create a scheduler/fleet or accept customer workloads. Actual source transport contracts live in [`src/acquisition`](../src/acquisition), with the bounded FMCSA capture described in [Local source connectors](LOCAL_SOURCE_CONNECTORS.md). The unused future-only `production/connector.ts` declaration was removed rather than kept as a parallel contract. Source observations enter the separate [real-source normalization/build path](REAL_SOURCE_CONTINUITY.md); the [boutique package milestone](BOUTIQUE_PRODUCT_MILESTONE.md) records what is reproduced internally and what still refuses customer delivery. Independent rights verification and public delivery remain absent.
 
-[Source integration inventory](SOURCE_INTEGRATION_INVENTORY.md) records the 21 named inputs from the Payload Terminal prototype. That prototype inventory is not a live connection count; the [source connection program](SOURCE_CONNECTION_PROGRAM.md) tracks current integrations, qualification scope and remaining blockers.
+[Source integration inventory](SOURCE_INTEGRATION_INVENTORY.md) records the 21 named inputs from the Payload Terminal prototype. That prototype inventory is not a live connection count; the [source connection program](LOCAL_SOURCE_CONNECTORS.md) tracks current integrations, qualification scope and remaining blockers.
 
 ```console
 npm run check

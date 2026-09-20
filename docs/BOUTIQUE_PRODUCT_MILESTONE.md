@@ -80,22 +80,6 @@ This observation-package workflow intentionally does not cast unresolved FMCSA o
 
 Additional real-browser production-path verification exposed a pre-acquisition worker-capacity race: overlapping background catalog reads occupied both bounded local worker slots, causing the following operator capture to return `PRODUCTION_BUSY`. Catalog refreshes are now coalesced into a single in-flight read plus a requested follow-up. Worker limits and explicit command retry semantics are unchanged; a refusal never becomes an automatic capture retry.
 
-## Remaining work toward a customer product
-
-1. Establish a reviewed source-use basis permitting the intended commercial preparation and delivery.
-2. Agree one product specification and acceptance question with an actual buyer; no customer or price is invented here.
-3. Connect verified product authority and recipient agreement to a real delivery route and durable successful-delivery register.
-4. Certify the persisted production release and demonstrate amendment/correction handling with supported evidence.
-5. Complete deployment/custody/backup/restore validation and the customer pilot.
-
-Further connectors, agents, spatial instruments and analytical models should be selected against those product requirements. Existing research remains available; it is not a substitute for these acceptance steps.
-
-## Concurrent frontend work
-
-The reviewed baseline consolidated here is `6dd691aa599e3ec8d49700704971bcdf749bcd00`. During verification, frontend commit `a728d3d63ddb294b7f52978930828073b364f936` appeared with POINT/POLYGON/EXTENT geometry and Earth Twin changes. It is **not merged by this increment**. Foundation history and this tested baseline are preserved.
-
-That integration requires extending the strict POINT-only database projection schema, preserving both admission metadata and instant-aware runtime selectors, retaining the separate frozen v0 fixture-membership codec, and explicitly reviewing the changed Landshark fixture release/manifest digests. Follow-up verification must include database hydration, geometry/projection integrity, fixture digests and desktop/mobile Earth flows. It is not required to reproduce the internal Company Census packages.
-
 ## Verification on 2026-09-08
 
 - Complete JavaScript/TypeScript suite: **4,898 passed**, 6 optional pinned-GAT integration tests skipped; 202 files passed. Includes 23 boutique-package tests, 19 embedded PostgreSQL tests, and the catalog-refresh regressions.

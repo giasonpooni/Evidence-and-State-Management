@@ -204,14 +204,6 @@ does not have.
   a second account that stated its own uncertainty.
   [`docs/ACCOMMODATION.md`](docs/ACCOMMODATION.md)
 
-[Open questions](docs/OPEN_QUESTIONS.md) lists the 115 architectural decisions
-- `docs/GOVERNANCE_KERNEL.md` — the governance kernel (principals, decision packets, digest-bound authorization, denial, expiry, revocation, correction lineage) and one dossier, one briefing and one simulated treasury run through it, with every refusal named.
-this repository has not taken, grouped by the part each belongs to. It is the
-only record of what is undecided; everything else in `docs/` records what was
-decided. The Obsidian canvas those questions were harvested from is archived
-under [`docs/archive/architecture-map/`](docs/archive/) — it stopped being
-revised on 2026-09-08 and none of its 63 brainstorming notes was ever used.
-
 ## The surfaces
 
 `/model` is the operating model as data. `/products`, `/releases`, `/stream`,
@@ -265,8 +257,7 @@ Opt-in, loopback-only, operator-driven, and none of them a public control.
 - The [FMCSA connector](docs/LOCAL_SOURCE_CONNECTORS.md) and the
   [Samsara adapter](docs/SAMSARA_CONNECTOR.md) are operator-only and bounded.
   Collection requires a flag the operator holds; historical inspection never
-  reconnects. The [21-source program](docs/SOURCE_CONNECTION_PROGRAM.md) records
-  what each subsequent connector is blocked on.
+  reconnects. The [source inventory](docs/SOURCE_INTEGRATION_INVENTORY.md) distinguishes historical declarations from implemented connectors.
 - Local [observation replay](docs/RECORDED_OBSERVATION_REPLAY.md), the
   [scalar benchmark](docs/SCIENTIFIC_BASELINE.md), the
   [registration experiment](docs/REGISTRATION_ACCESS.md) and the
@@ -347,7 +338,6 @@ Typecheck also rejects unused locals and parameters. [Codebase consolidation](do
 ## Read
 
 - `docs/ECONOMIC_ARCHITECTURE.md` — current boutique data-and-analytics mandate, internal preparation boundary, implementation status and explicitly superseded historical economic formulations.
-- `docs/PHASE0_RECON.md` — what the sibling repositories contain, verbatim vocabulary, conflicts, recorded ambiguities.
 - `docs/COMPANY_MANDATE.md` — the company mandate, customer categories, economic architecture, and NotationsOS product structure.
 - `docs/SYNTHESIZED_ARCHITECTURE.md` — five fabrics, seven doctrine invariants, historical concept mapping and target runtime/projection responsibilities; implemented boundaries are explicit.
 - `docs/PROJECTION_FABRIC.md` — exact fixture ProjectionSpec, read-only preview example, identity-preserving records/graph, rights/time gates and explicit missing geometry; no renderer implementation.
@@ -355,13 +345,12 @@ Typecheck also rejects unused locals and parameters. [Codebase consolidation](do
 - `docs/WORKSPACE_DESIGN.md` — the design language, the one shell, the inspector pattern, the notation and candidate-production slices built on it, and the verification receipt.
 - `docs/STATUTORY_HARVESTER.md` — the insurance-regulator rail: the declared per-jurisdiction header grammar and its four presence states, why a filing supplies the two stages the census rail is missing, what is a claim and what is a coordinate, the two as-of questions, and the two boundaries the payload states rather than implies — nothing collected, nothing written.
 - `docs/PRODUCTION_PATH.md` — the production path: seven stages with states derived from the rail's receipts, identities and recovery, the real source readback, the notation and release blockers, and the receipt.
-- `docs/EARTH_TWIN.md` — the NotationsOS Earth Twin: the projection fabric's CesiumJS instrument built on God's Eye View's globe stack, keyless and offline, with every layer's source and state, the corpus asked for honestly, the signal-source registry, the staged plan and the receipt.
+- `docs/EARTH_TWIN.md` — the NotationsOS Earth Twin: the projection fabric's CesiumJS instrument built on God's Eye View's globe stack, keyless and offline, with every layer's source and state, the corpus asked for honestly, the signal-source registry, current limits and the receipt.
 - `docs/AGENT_COORDINATION.md` — the shared agent/apparatus stable, scoped board and inbox, contract synastry, JavaScript/Python clients, local worker and Bench references.
 - `docs/LOCAL_EVIDENCE_INTAKE.md` — local source-policy evaluation, content-addressed evidence, acquisition receipts, inspection and Bench-derived boundaries.
 - `docs/LOCAL_SOURCE_CONNECTORS.md` — operator-only live FMCSA Company Census qualification, strict transport, original-byte capture, permanent request bounds and historical inspection.
 - `docs/SAMSARA_CONNECTOR.md` — offline-tested, operator-only single-vehicle GPS history; retained fleet authorization, current-use gates, private-storage limits and source observation semantics. No live fleet qualification.
 - `docs/CLEARANCE_VOI.md` — exact finite-state measurement design, shared geometric dependencies, loss/cost comparisons, hypothetical posterior inspector and current-use-gated local evidence runs.
-- `docs/SOURCE_CONNECTION_PROGRAM.md` — 21-source market-value queue, exact initial scope, access/rights blockers and sequential acceptance requirements.
 - `docs/LOCAL_NORMALIZATION.md` — fixed Caravan Carrier parsing, separate derivation permission, source-scoped candidates, quarantine and read-only recomputation.
 - `docs/LOCAL_CANDIDATE_BUILDS.md` — explicit time-bounded candidate membership, build-time derivation permission, reference roots and historical inspection; no canonical admission.
 - `docs/LOCAL_CANDIDATE_COMPARISON.md` — read-only exact local build comparison, source-scoped reference changes and deterministic ephemeral reports; no semantic diff or released change feed.
@@ -369,7 +358,7 @@ Typecheck also rejects unused locals and parameters. [Codebase consolidation](do
 - `docs/CANDIDATE_BUILD_REVIEW_WORKER.md` — manually launched board-to-local-build inspection, bounded results, result-before-receipt recovery and authority limits.
 - `docs/INTERACTION_SPEC.md` — status transitions, refusal interaction, replay, supersession, visibility.
 - `docs/DEMO_CASE.md` — the fixtures, why they are synthetic, what they demonstrate, what is unvalidated.
-- `docs/STORAGE.md` — six classes of information, the store each asks for, the invariant each must not break, and the sequence in which one earns its place.
+- `docs/STORAGE.md` — six classes of information, the store each asks for, the invariant each must not break, and the current implementation boundary.
 - `docs/CORRECTION_AND_IDENTITY.md` — downstream invalidation per class of derived artifact, the delivery ledger, as-of as a contract feature, and the identity core with the still-absent cross-line join.
 - `docs/CROSS_LINE_JOIN.md` — the two present join keys run across all three corpora: the three lines and what each carries, the precision rule, the two clocks kept apart, 11 pairs with their outcomes, and why `resolved` is the literal 0.
 - `docs/METERING.md` — the lap, the two halves of a response receipt, the metering boundary, and the federation risk stated as work to do.

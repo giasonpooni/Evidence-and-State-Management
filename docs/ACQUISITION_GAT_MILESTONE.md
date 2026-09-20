@@ -2,12 +2,6 @@
 
 ## Repository baseline and dependencies
 
-Implementation began from clean NotationsOS commit `f68eb460001994891c2e0ade26cd0bd68fd78735` on `codex/payload-os-foundation`, not the older `9c16b1c` reference in the brief. All adapters, contracts, tests, fixtures and documentation are in NotationsOS.
-
-The sibling Notations Kernel was rechecked read-only at `c6d693613478f32e0b0d7dafe918d8e51274ffcc`, branch `codex/payloados-0.7-baseline`: 53 modified tracked files and 74 untracked files before and after. No sibling files, branches, commits or uncommitted implementation were imported or changed. The prior [cross-repository assessment](CROSS_REPOSITORY_BASELINE.md) and test-only vendor pin remain unchanged.
-
-The BIM source repository was not modified. The only execution checkout was an isolated NotationsOS-owned copy under ignored `.payload/gat-runtime/engine`, detached at `80272f94107cce4f70c81e57915800b04c5944a6`. Its full Git status remained clean after real executions. No engine install/build hooks were run; bootstrap uses verified source and a hash-pinned NumPy wheel in a dedicated environment.
-
 | Dependency | Exact version or pin |
 |---|---|
 | GAT engine | `80272f94107cce4f70c81e57915800b04c5944a6` |
@@ -60,8 +54,8 @@ Final executed results on 2026-09-05:
 
 The focused counts overlap the full suite; they are separate execution results, not additive coverage claims.
 
-## Frontend handoff and next gate
+## Frontend contract and limitations
 
-Claude's required contracts and end-to-end request sequences are in [Local production workflow](LOCAL_PRODUCTION_WORKFLOW.md) and [GAT inspector](GAT_INSPECTOR.md). Render backend stages/outcomes and exact retained references; HTTP success means a receipt was confirmed, not that a transformation or audit passed. No new browser workbench was built in this backend milestone.
+The frontend contracts and end-to-end request sequences are in [Local production workflow](LOCAL_PRODUCTION_WORKFLOW.md) and [GAT inspector](GAT_INSPECTOR.md). Render backend stages/outcomes and exact retained references; HTTP success means a receipt was confirmed, not that a transformation or audit passed. No new browser workbench was built in this backend milestone.
 
 Still absent: live collection, production storage/identity, customer delivery, managed customer workloads, independent verification and a completed pilot. GAT runtime portability beyond the reviewed Windows x64 pin is also absent. Production exposure requires authentication/authorization and reviewed storage/execution isolation; live collection requires an exact authorized source and scope. Authored evidence links, corpus admission, change-impact/evidence planning and Bevy remain separate future gates.

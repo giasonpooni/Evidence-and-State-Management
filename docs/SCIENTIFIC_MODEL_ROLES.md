@@ -36,9 +36,3 @@ The first local baseline is a bounded scalar linear-Gaussian estimator with evid
 Absolute observations or explicit priors must anchor each connected component. Marginal variance comes from the inverse joint information matrix, not the reciprocal of its diagonal. Posterior states can be correlated even when measurement errors are independent. Missing variance remains missing; correlated or unresolved errors are not silently treated as independent. Singular or unsupported configurations require refusal, not invented certainty.
 
 Before a real benchmark can qualify, it still needs measured noise, calibrated frames and clocks, source authority, and independently characterized reference uncertainty. Held-out references must not influence estimation, calibration, association selection, or parameter tuning. Distinct identifiers alone do not establish independence. Shared corrections and calibration can introduce correlation.
-
-## Subsequent learned experiments
-
-Predeclare the task, conventional comparison, accuracy/runtime/failure metrics, and split by held-out sites, sessions, geometries, or operating conditions before choosing a learned approach. Random samples from one recording do not establish cross-session generalization. Report exactly what runtime includes.
-
-Each result identifies inputs, model/version, assumptions, validation domain, and uncertainty method. Physics-informed training is not proof of physical correctness: documented [PINN failure modes](https://arxiv.org/abs/2109.01050) make independent checks necessary. No framework installation, model training, learned-model validation, or automatic admission is claimed here.

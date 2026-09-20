@@ -256,7 +256,7 @@ export const PRECONDITIONS: readonly Precondition[] = [
     kind: 'RIGHTS',
     met: false,
     because: 'Two connectors are implemented and operator-gated. Collection needs an explicit flag the operator holds, and this system does not hold it.',
-    provenBy: 'docs/SOURCE_CONNECTION_PROGRAM.md, src/domain/productionPath.ts',
+    provenBy: 'docs/LOCAL_SOURCE_CONNECTORS.md, src/domain/productionPath.ts',
   },
   {
     id: 'IMAGERY_RIGHTS',

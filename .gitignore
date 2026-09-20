@@ -17,3 +17,10 @@ __pycache__/
 native/state-kernel/target/
 public/cesium/
 review-*.png
+
+# Local working notes and authoring instructions
+/.private/
+/docs/private/
+/AGENTS.md
+/CLAUDE.md
+**/*HANDOFF*.md

@@ -133,15 +133,6 @@ Adopted: the CesiumJS globe with the widget chrome off and the credit line kept 
 
 The twin therefore makes no request that leaves its origin. The browser test asserts it: every request the page makes is same-origin, `blob:` or `data:`.
 
-## The plan, staged
-
-1. **v0, done.** The instrument exists: keyless, offline, on the shared shell with the inspector pattern, bound to the projection compiler, carrying the registry, with time computed and views linkable. Nothing on the globe but the Earth, and the reasons why.
-2. **v1, done.** Geodetic positions are corpus records (`location.position`, a WGS84 point with stated horizontal uncertainty, with their own evidence class, provenance, rights, visibility and both clocks), the release digests commit to them, the compiler resolves them per selected record under the same gate and returns every declaring source, and the twin draws a record where the release says its subject was, with its status at the knowledge time. Two positions are declared in the demonstration corpus; the corpus owner decides any further declaration, and a real position enters the corpus the way any record does.
-3. **v2, signals through the rail.** One public-domain source from the registry (USGS earthquakes is the least encumbered) registered as a source, its rights decided for an exact purpose, operation and audience, captured with a receipt, normalized under a fixed contract into candidates with positions, and shown on the twin as candidates: `UNADMITTED`, `UNRESOLVED`, with their capture and knowledge times. That is the acquisition fabric's first observed geography, and it is not evidence of anything until admitted. The backend branch's bounded, operator-only FMCSA Company Census connector ([Local source connectors](LOCAL_SOURCE_CONNECTORS.md)) is the pattern to follow: one exact request, preserved bytes and receipts, no recurring ingestion; it carries carrier records, not positions, so it reaches the twin only once something declares where a carrier is.
-4. **v3, interop.** A God's Eye View target handed to NotationsOS as a share link becomes a notation with an evidence reference of kind `SIGNAL`, once the kernel has the attach command; a NotationsOS view opens in God's Eye View at the same camera. Two instruments, one referent identity.
-
-Each stage needs a material choice or a backend contract (a fixture change, a source registration, a kernel command) that is not the frontend's to make alone; each is stated here so the choice can be made.
-
 ## What the design does not bend
 
 - The globe is not evidence. Bundled imagery and a computed sun are context; the inspector says so in the twin's non-claims.

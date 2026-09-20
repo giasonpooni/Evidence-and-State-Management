@@ -79,30 +79,6 @@ whose cells are near-equal-area and whose neighbour operations are defined, is
 the successor; adopting one is a library decision, and this is the stand-in until
 then.
 
-## The five derivations, ranked
-
-1. **Flow through geometry.** A movement resolved to a facility, the facility to
-   the parcel it sits on, the parcel's own events attached — one sentence across
-   three lines, every step a spatial predicate. The flow vendors stop at "the
-   vessel visited the port"; the parcel vendors stop at "the parcel exists".
-   *Hazard:* a chain of predicates each true at its own tolerance is not true at
-   the tolerance of the tightest one.
-2. **Change over a place, as a candidate observation.** Construction stage,
-   stockpile volume, yard utilization, derived from imagery and entering as
-   candidates with their scene and model. The doctrine already handles it: a
-   detector is an extraction adapter. *Hazard:* a detection is an assertion by a
-   model, and a model is an interested party.
-3. **One receipted spatial aggregate, reused by all three lines.** Every product
-   question is a spatial aggregate wearing a domain's clothes. *Hazard:* an
-   aggregate that hides its refusals reads as coverage the corpus does not have.
-4. **Versioned boundaries.** What the flood zone or the zoning line said on the
-   date a decision relied on it. Everything else here is already bitemporal;
-   geometry is the one class the industry overwrites. *Hazard:* a revised
-   boundary is a correction, so it must reach the retraction ledger.
-5. **Movement signatures.** Patterns over repeated positions. Ranked last because
-   it is the most inferential. *Hazard:* a behavioural inference about an
-   identified party is where a record stops being a record.
-
 ## What is deliberately not built
 
 - **The containment predicate.** `CorpusRecord.geometry` admits `POINT`,
@@ -126,24 +102,6 @@ then.
 - **A spatial database.** PostGIS, S2, H3 and STAC are the purchased layer. What
   belongs to the firm is the resolution bound, the refusal where the evidence is
   silent, and the recorded judgment where two boundaries disagree.
-
-## The order
-
-1. The cell key, because every other derivation presupposes it and it needs no
-   new source. **Done.**
-2. Areal geometry on the record contract. **Done.** `POLYGON` and `EXTENT` sit
-   beside `POINT`, keyed by the same rule with one term added: a shape's cell is
-   bounded by its stated uncertainty plus its own reach, because reducing an
-   extended feature to one cell means the cell has to contain it. A boundary
-   with no stated accuracy is refused a key exactly as a point with none is.
-3. The containment predicate, with its rule for an uncertain container. This is
-   now the only thing between the corpus and the strong join.
-4. The resolution decision object, so a candidate can become one subject with
-   evidence behind it and be undone without rewriting history.
-5. The flow-through-geometry demonstration over one place and one week, end to
-   end with digests.
-5. Imagery last of the sources, because its rights are the strictest and its
-   value depends on everything above being in place.
 
 ## Where it lives
 

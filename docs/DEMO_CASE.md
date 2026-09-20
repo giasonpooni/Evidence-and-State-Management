@@ -39,6 +39,6 @@ A broker relying on facts produced by others can open the case, see the subject,
 ## What remains commercially unvalidated
 
 - The domain rules (CAR-101 to CAR-106), their thresholds (14-day certificate window, 6-hour custody gap, 0.5 % settlement tolerance) and the use codes are placeholders for a real brokerage profile.
-- The assurance-class mapping from substrate facts is a recorded presentation policy, not an agreed doctrine (see `docs/PHASE0_RECON.md`, ambiguities).
+- The assurance-class mapping from substrate facts is a recorded presentation policy, not an agreed doctrine.
 - No customer, counterparty, inspector or regulator has reviewed any of it. Nothing here is certified, accredited, cryptographically verified or externally witnessed, and every screen that could imply otherwise says which of those is not available.
 - The Tradewind and Landshark verticals exist only as disabled module slots.

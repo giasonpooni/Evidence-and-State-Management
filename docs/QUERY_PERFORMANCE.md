@@ -54,22 +54,6 @@ under 5 ms, so the property is pinned rather than remembered.
 The build cost is real and amortised. It is also the honest shape of the thing:
 an index is prepared, then queried.
 
-## What this says about the next design pass
-
-Two of the three measured paths need an actual index rather than a faster scan,
-and the shape is already visible without a customer:
-
-- **As-of is a lookup on `(subjectId, predicate)` ordered by `knownAt`.** That is
-  a composite index and a descending scan bounded by the knowledge time, not a
-  filter over everything.
-- **The condition grammar should resolve a whole tree in one pass**, not one
-  query per leg. Its resolver is already a seam — it takes a `FactResolver` — so
-  a batching resolver is a change at one boundary rather than through the
-  grammar.
-- **Rights filtering has to be decided before the index is built, not after.**
-  An index built first and filtered second holds what the filter would have
-  withheld, and every failure in that shape is a disclosure rather than a bug.
-
 ## The numbers, addressable
 
 `src/domain/queryCost.ts` holds the points above as data, and `/api` renders
