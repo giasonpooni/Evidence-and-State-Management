@@ -30,6 +30,34 @@ compatibility identities. Existing interface labels such as NotationsOS and
 PayloadOS may still identify those internal components; they are not the current
 repository title. Historical records are not relabeled into new evidence.
 
+## A concrete local evidence path
+
+Solid arrows show the implemented local-file intake and reinspection rail.
+Its result is retained evidence with a recomputable receipt; canonical corpus
+admission and release remain separate boundaries.
+
+```mermaid
+flowchart TD
+    file["Local file bytes"] --> policy{"Declared INTERNAL INGEST allowed?"}
+    manifest["Source registration and capture time"] --> policy
+    policy -->|Denied or approval required| refused["Capture refused"]
+    policy -->|Allowed| storage["Store bytes and verify readback"]
+    storage --> metadata["Acquisition metadata and receipt"]
+    metadata --> inspect["Reopen saved acquisition"]
+    inspect --> integrity{"Policy, metadata and bytes agree?"}
+    integrity -->|No| error["Integrity error; no repair"]
+    integrity -->|Yes| receipt["Recomputed local receipt"]
+```
+
+Policy authority is an operator declaration, not independent confirmation of
+source rights. Byte publication and metadata publication are separate, so a
+failed capture may leave retained bytes. Inspection grants no new current-use
+permission and the acquisition explicitly carries `canonicalAdmission: false`.
+Native CIW replay has a separate [candidate-evidence route](docs/INSTRUMENT_CANDIDATE_EVIDENCE.md)
+with fresh evidence/result verification and optional retention as `UNADMITTED`.
+See [admission and serving diagrams](docs/STACK_ROLE.md#admission-and-serving-diagrams)
+and [Diagram atlas](https://github.com/giasonpooni/Computational-Instrumentation-Workbench/blob/main/docs/DIAGRAMS.md).
+
 ## Stack responsibilities
 
 | Component | Responsibility and boundary |
