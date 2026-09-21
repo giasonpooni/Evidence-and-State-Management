@@ -8,11 +8,16 @@ This component owns **evidence retention, state admission and release**. The [st
 | Property | Scope |
 | --- | --- |
 | Implementation | Executable local rails and bounded domain implementations; demonstration corpora |
-| Workbench connection | No CIW persistence adapter |
+| Workbench connection | Native CIW telemetry replay inspection and optional candidate-evidence capture through the existing content-addressed evidence seam; no canonical-state persistence adapter |
 | Inputs | Source evidence, candidate records, identity/time declarations and applicable policy. |
 | Outputs | Retained evidence, candidate/admission decisions, versioned domain records and governed responses within documented paths. |
 
 Local candidate preparation, authored workspace state and canonical corpus admission remain separate. Demonstration feeds do not establish a production customer service.
+
+[Replayed instrument candidate evidence](INSTRUMENT_CANDIDATE_EVIDENCE.md) documents
+the read-only CLI and separately authorized retention API. Fresh replay and
+evidence/result/verification binding permit candidate review or retention,
+not world-state truth, CSE acceptance or release.
 
 ## Interoperability
 

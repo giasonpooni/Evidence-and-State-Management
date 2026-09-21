@@ -50,6 +50,11 @@ no new acquisition, execution, redistribution or physical-control authority.
 
 ## What is actually here
 
+The [instrument candidate-evidence adapter](docs/INSTRUMENT_CANDIDATE_EVIDENCE.md)
+replays pinned CIW telemetry bundles and freshly verifies evidence/result binding
+before read-only candidate review or optional retention through the existing
+evidence store. It does not admit numerical outputs as canonical world state.
+
 Read this before anything else, because the rest of the repository is careful
 about it and a reader should be too.
 

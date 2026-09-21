@@ -68,6 +68,12 @@ jobs:
 
       - run: npm ci
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instrument replay source-pin and strict-JSON adversarial tests
+        run: python -B scripts/test_instrument_replay_verify.py
+
       # `npm run check` is kernel:test && typecheck && lint && test, in that
       # order, and it is what a contributor runs. Running the same command means
       # CI cannot drift from the local gate.
